@@ -4,6 +4,12 @@ This is intended to give a guideline on the eternal IBM i operating system.
 
 ![alt text](./images/ibmi_logo.png)
 
+## Table of content
+
+(Soon)
+
+## Starting the bottom
+
 The special term in computer science is **abstraction**. There are levels of abstraction, basically from the atom to the internet. 
 
 Here, we are going to start from the silicon up to get a better understanding of what is going on behind the green screen.
@@ -54,13 +60,21 @@ To execute a program, the OS needs to allocate the resources needed for it, but 
 
 The system allocates resources to the job, and the program is basically **loaded** into the job resources. Now the program can be executed through the job resources. Really cool stuff.
 
-A job can be viewed as an abstraction of allocated resources. By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a *process*. 
+*A job can be viewed as an abstraction of allocated resources*. By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a *process*. 
 
-Each function call creates a stack frame with the context (variables), which will be loaded into the registers to be executed by the processor.
+> During a process execution, the instructions and data will be loaded from memory into the registers to be executed by the processor. Modern operating systems fetch a large number of instructions, generate a dependency graph and try to execute them in a parallel and out-of-order manner. Every time you run a program, it never runs the same twice, even though it gives the same result. That's kind of amazing.
 
 Till this point, the description of an operating system is mostly the same for any modern system. Now comes what is specific to the IBM i OS.
 
-## IBM I program excecution
+## Resource allocation
+
+When the IBM I allocates resources for a program on a job is called an **activation** (this is the same idea of a process). A job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource the executing programs may need. The job sees them all as part of the same virtual memory. To liberate these resources, it is only necessary to delete the activation group, which, effectively, is a **deactivation**.
+
+We know that the IBM I allocates resources for a program in a job, but how does it allocates the resources for the job itself? That's where the **subsystems** come into play.
+
+A subsystem is like an abstraction on top of jobs that has the resources needed for many jobs.
+
+A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** programs, it is used to spawn jobs, which in turn will activate programs to be executed. 
 
 ## Command navigation
 
