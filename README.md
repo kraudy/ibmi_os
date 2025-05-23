@@ -44,7 +44,21 @@ The AS/400 evolved into the IBM i platform. The OS/400 was renamed to i5/OS and 
 
 Here starts the IBM I guideline.
 
-## IBM I system resources
+![alt text](./images/the_green_screen.png)
+
+## Program execution
+
+The main purpose of an operating sytem is managing resources (CPU, Disk, Memory, etc); this includes abstracting and assigning them where needed.
+
+To execute a program, the OS needs to allocate the resources needed for it, but it does not allocate them directly to the program; rather, an abstraction is used: [**The job**](https://en.wikipedia.org/wiki/Job_(computing)).
+
+The system allocates resources to the job, and the program is basically **loaded** into the job resources. Now the program can be executed through the job resources. Really cool stuff.
+
+A job can be viewed as an abstraction of allocated resources. By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a *process*. 
+
+Each function call creates a stack frame with the context (variables), which will be loaded into the registers to be executed by the processor.
+
+Till this point, the description of an operating system is mostly the same for any modern system. Now comes what is specific to the IBM i OS.
 
 ## IBM I program excecution
 
