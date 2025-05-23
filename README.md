@@ -80,10 +80,12 @@ A subsystem is similar to a job in the sense that it is an abstraction of the sy
 
 
 
-## System navigaction
+## System navigation
 
-On the IBM I there are no directories or files; everything is an **Object** (which basically means *something*). There are different kinds of objects (for example, a job is considered an object, the same goes for a table), but to really understand the IBM I object hierarchies (eg: The file system) we only need to know about **Libraries** and **Source PF(Physical File)**
+On the IBM I there are no directories or files; everything is an **Object** (which basically means *something*). There are different kinds of objects (for example, a job is considered an object, the same goes for a table), but to really understand the IBM I object hierarchies (e.g: The file system) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me here. I'll explain.
 
-> A Physical File is not the same as a Source PF. A Physical File is the native version of the IBM I of an SQL table, intended for storing data to be processed. A Source PF is kind of table used to store the source of programs to be compiled. It is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition. Each member or definition is the source code of a program, table or any other source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+A Physical File is the native version of the IBM I of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source of other objects to be compiled o created. 
 
-Every object *seen* by the system is allocated in a *library* (a library is similar to folder), it is an object used to store all other kind of objects (except another library). A library can have compiled programs (**PGM**), 
+A Source PF is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code of a program, table or any other object source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+
+Every object *seen* by the system is allocated in a *library* (a library is similar to a folder), it is an object used to store all other kinds of objects (except another library). A library can have compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) 
