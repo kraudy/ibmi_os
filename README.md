@@ -48,6 +48,8 @@ Programs were compiled into a high-level instruction set called Intermediate Lan
 
 The AS/400 evolved into the IBM i platform. The OS/400 was renamed to i5/OS and then to the [IBM i](https://en.wikipedia.org/wiki/IBM_i)
 
+> The AS/400 was later renamed to iSeries and now is called [IBM Power Systems](https://en.wikipedia.org/wiki/IBM_Power_Systems)
+
 Here starts the IBM I guideline.
 
 ![alt text](./images/the_green_screen.png)
@@ -72,12 +74,16 @@ When the IBM I allocates resources for a program on a job is called an **activat
 
 We know that the IBM I allocates resources for a program in a job, but how does it allocates the resources for the job itself? That's where the **subsystems** come into play.
 
-A subsystem is like an abstraction on top of jobs that has the resources needed for many jobs.
-
 A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** programs, it is used to spawn jobs, which in turn will activate programs to be executed. 
 
-## Command navigation
+## OPM and ILE
 
-## OPM
 
-## ILE
+
+## System navigaction
+
+On the IBM I there are no directories or files; everything is an **Object** (which basically means *something*). There are different kinds of objects (for example, a job is considered an object, the same goes for a table), but to really understand the IBM I object hierarchies (eg: The file system) we only need to know about **Libraries** and **Source PF(Physical File)**
+
+> A Physical File is not the same as a Source PF. A Physical File is the native version of the IBM I of an SQL table, intended for storing data to be processed. A Source PF is kind of table used to store the source of programs to be compiled. It is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition. Each member or definition is the source code of a program, table or any other source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+
+Every object *seen* by the system is allocated in a *library* (a library is similar to folder), it is an object used to store all other kind of objects (except another library). A library can have compiled programs (**PGM**), 
