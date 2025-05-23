@@ -88,9 +88,21 @@ Every object **seen** by the system is allocated in a **library** (a library is 
 
 At this point, you should have the background necessary to tackle the IBM i.
 
+## Getting the tools
+
+Enough explanations, ideas by themselves are nothing, we need to apply them to generate knowledge. Let's prepare for some hands-on. 
+
+To use the IBM I, access to a Power server is necessary. We'll be using [PUB400](https://pub400.com/) which is a Power server on the internet. Head to the [sing up](https://pub400.com/cgi/signup.nd/start) page and create your user.
+
+After that you need a way to *connect*, we'll be using the [ACS (Access Client Solutions)](https://www.ibm.com/support/pages/ibm-i-access-client-solutions) which is free. It emulates a [5250 terminal](https://en.wikipedia.org/wiki/IBM_5250) (the green scren) over telnet.
+
+We also need a modern way to edit code. [VsCode](https://code.visualstudio.com/) with the [IBM I Development Pack](https://marketplace.visualstudio.com/items?itemName=HalcyonTechLtd.ibm-i-development-pack) is the way.
+
+You can check this nice [tutorial by Marco](https://github.com/MarcoDeSenas/IBMi-topics-thanks-to-pub400/blob/main/HowTo/Workstation%20tools.md) that describes the three previous steps.
+
 ## Facing the IBM I
 
-
+Once inside, we see the iconic green scren. What is this?
 
 ## OPM and ILE (Maybe just mention and add it to the rpg repo)
 
