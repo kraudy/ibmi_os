@@ -90,19 +90,67 @@ At this point, you should have the background necessary to tackle the IBM i.
 
 ## Getting the tools
 
-Enough explanations, ideas by themselves are nothing, we need to apply them to generate knowledge. Let's prepare for some hands-on. 
+Enough explanations, ideas by themselves are nothing unless you are some Hellenistic Greek philosopher. We need to apply them to generate knowledge, that's the beauty of engineering: it works, or it does not work. Let's prepare for some hands-on. 
 
 To use the IBM I, access to a Power server is necessary. We'll be using [PUB400](https://pub400.com/) which is a Power server on the internet. Head to the [sing up](https://pub400.com/cgi/signup.nd/start) page and create your user.
 
 After that you need a way to *connect*, we'll be using the [ACS (Access Client Solutions)](https://www.ibm.com/support/pages/ibm-i-access-client-solutions) which is free. It emulates a [5250 terminal](https://en.wikipedia.org/wiki/IBM_5250) (the green scren) over telnet.
 
-We also need a modern way to edit code. [VsCode](https://code.visualstudio.com/) with the [IBM I Development Pack](https://marketplace.visualstudio.com/items?itemName=HalcyonTechLtd.ibm-i-development-pack) is the way.
+We also need a modern way to edit code. [VsCode](https://code.visualstudio.com/) with the [IBM I Development Pack](https://marketplace.visualstudio.com/items?itemName=HalcyonTechLtd.ibm-i-development-pack) through [Code4i](https://marketplace.visualstudio.com/items?itemName=HalcyonTechLtd.code-for-ibmi) is the way.
 
 You can check this nice [tutorial by Marco](https://github.com/MarcoDeSenas/IBMi-topics-thanks-to-pub400/blob/main/HowTo/Workstation%20tools.md) that describes the three previous steps.
 
 ## Facing the IBM I
 
-Once inside, we see the iconic green scren. What is this?
+Once inside, we see the iconic green screen. What is this? Well, it is a terminal, like the [Windows CMD](https://en.wikipedia.org/wiki/Cmd.exe) or the Linux [bash shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). What is the purpose? To send commands to the operating system like any other shell. The IBM I shell is called **QCMD**, you can actually do a ***CALL QCMD*** to directly invoke the terminal.
+
+IBM I has a utility for navigation called [***PDM (Programming Development Manager)***](https://en.wikipedia.org/wiki/Programming_Development_Manager). PDM is invoked with ***STRPDM***
+
+![alt text](./images/pdm.png)
+
+There you can select an option to work with libraries, objects or members. But you can also execute the commands directly like this:
+
+* work with libraries: ***wrklibpdm*** + ***F4***
+* work with objects: ***wrkobjpdm*** + ***F4***
+* work with members: ***wrkmbrpdm*** + ***F4***
+
+> Almost all IBM I commands can be prompted with **F4**, this will show you the minimum parameters required to execute them. Some commands have extra parameters that can be viewed with **F10** and to change the presentation of the parameters press **F11**
+
+These commands are the basics for navigating the IBM I.
+
+Inside PUB400 you should have two libaries with the name of your user plus a 1 and a 2 like this
+
+![alt text](./images/pub400_libraries.png)
+
+Go to your library with ***wrklibpdm yourlib1***, select option ***12***
+
+![alt text](./images/lib_opt_12.png)
+
+Your library is probably empty. We will create an compiled object (a program); for that, a source PF is needed, lets create it. You can do ***F6*** + ***OPT 153*** or execute the command directly ***CRTSRCPF*** + ***F4***
+
+![alt text](./images/crtsrcpf.png)
+
+Press ***F5*** to refresh and the new source PF should be in your library
+
+![alt text](./images/srcpf.png)
+
+Do ***OPT 12*** on the source PF. Here you can do ***F6*** directly to create a new source PF member which is an [RPGLE](https://en.wikipedia.org/wiki/IBM_RPG) source code.
+
+![alt text](./images/crtmember.png)
+
+You should see something like this
+
+![alt text](./images/seu.png)
+
+That is IBM [SEU](https://www.nicklitten.com/course/what-is-seu-source-entry-utility/). This was the original *IDE* of the IBM I developers. Here just press enter and add the word **FILE** in the upper line, press enter again and you should have the new member.
+
+![alt text](./images/created_member.png)
+
+Now we are going to use VsCode to edit it.
+
+***dspjoblog***
+
+## Now, using Code4i
 
 ## OPM and ILE (Maybe just mention and add it to the rpg repo)
 
