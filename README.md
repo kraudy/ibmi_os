@@ -8,7 +8,7 @@ This is intended to give a guideline on the eternal IBM i operating system.
 
 (Soon)
 
-## Starting the bottom
+## Starting from the bottom
 
 The special term in computer science is **abstraction**. There are levels of abstraction, basically from the atom to the internet. 
 
@@ -16,13 +16,17 @@ Here, we are going to start from the silicon up to get a better understanding of
 
 Silicon has some nice properties to make transistors. With transistors, you make logical gates; these logical gates perform boolean operations, which turn into logical units that form a circuit, and in the middle we have the CPU, which has its corresponding architecture and instruction set architecture. 
 
-We are familiar with the (*x86-64*)[https://en.wikipedia.org/wiki/X86-64] archs. Currently, IBM has the [*PPC64*](https://en.wikipedia.org/wiki/Ppc64) processor architecture with the [*Power ISA*](https://en.wikipedia.org/wiki/Power_ISA) instruction set architecture which is a [*RISC*](https://en.wikipedia.org/wiki/Reduced_instruction_set_computer) instruction set (yeah, RISC like [RISC-V](https://en.wikipedia.org/wiki/RISC-V])).
+We are familiar with the [*x86-64*](https://en.wikipedia.org/wiki/X86-64) archs. Currently, IBM has the [*PPC64*](https://en.wikipedia.org/wiki/Ppc64) processor architecture with the [*Power ISA*](https://en.wikipedia.org/wiki/Power_ISA) instruction set architecture which is a [*RISC*](https://en.wikipedia.org/wiki/Reduced_instruction_set_computer) instruction set (yeah, RISC like [RISC-V](https://en.wikipedia.org/wiki/RISC-V])).
 
-IBM made the first leap from the early designs of cumputers from [Harvard architecture] (https://en.wikipedia.org/wiki/Harvard_architecture) to the [Von Neuman](https://en.wikipedia.org/wiki/Von_Neumann_architecture) single-operator machine: instruction and data shared the same memory, they were fetched, decoded, and executed in a linear fashion, no branch prediction or fancy stuff. This was the [IBM 701](https://en.wikipedia.org/wiki/IBM_701). Programs were written in low-levellanguages, which made them tightly coupled to the hardware.
+IBM made the first leap from the early designs of cumputers from [Harvard architecture](https://en.wikipedia.org/wiki/Harvard_architecture) to the [Von Neuman](https://en.wikipedia.org/wiki/Von_Neumann_architecture) single-operator machine: instruction and data shared the same memory, they were fetched, decoded, and executed in a linear fashion, no branch prediction or fancy stuff. This was the [IBM 701](https://en.wikipedia.org/wiki/IBM_701). 
+
+Programs were written in low-level languages, which made them tightly coupled to the hardware. That means: *if you change the hardware, the software breaks and if you change the software without updating the hardware, it just doesn't work anymore*
 
 ## Toward Higher-Level Abstraction
 
-Due to the increase in complexity and requirements, the limitations of low-level programming became evident. That's when higher-level languages came into play (Fortran, COBOL, RPG, etc.). The compiler translated these high-level languages to machine-specific instructions. But here is the important part: *the compiled code still executed directly on the processor’s native instruction set*.
+Due to the increase in complexity and requirements, the limitations of low-level programming became evident. That's when higher-level languages like [Fortran](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/IBM_COBOL) and [RPG](https://en.wikipedia.org/wiki/IBM_RPG) came into play. The [compiler](https://en.wikipedia.org/wiki/Compiler) translated these high-level languages to machine-specific instructions. 
+
+Now we had an intermediary, the compiler, but here is the important part: *the compiled code still executed directly on the processor’s native instruction set*. If you change the CPU architecture or instruction set, all compiled programs just break.
 
 There was a need for a better way to manage resources and scale; that's when the ideas of *LSI* (virtualization of storage), *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project) started emerging. 
 
@@ -126,7 +130,7 @@ Go to your library with ***wrklibpdm yourlib1***, select option ***12***
 
 ![alt text](./images/lib_opt_12.png)
 
-Your library is probably empty. We will create an compiled object (a program); for that, a source PF is needed, lets create it. You can do ***F6*** + ***OPT 153*** or execute the command directly ***CRTSRCPF*** + ***F4***
+Your library is probably empty. We will create a compiled object, a program, to demostrate some of the explained concepts. A *source PF* is needed for the source code of the program, lets create it. You can do ***F6*** + ***OPT 153*** from *PDM* or execute the command directly ***CRTSRCPF*** + ***F4***
 
 ![alt text](./images/crtsrcpf.png)
 
@@ -134,7 +138,11 @@ Press ***F5*** to refresh and the new source PF should be in your library
 
 ![alt text](./images/srcpf.png)
 
-Do ***OPT 12*** on the source PF. Here you can do ***F6*** directly to create a new source PF member which is an [RPGLE](https://en.wikipedia.org/wiki/IBM_RPG) source code.
+> Hit ***Shift*** + ***F11*** if youn can't see the ***OPT 12***
+
+Do ***OPT 12*** on the source PF. Here you can do ***F6*** directly to create a new source PF member. This member is an [RPGLE](https://en.wikipedia.org/wiki/IBM_RPG) source code called **HELLO**.
+
+> Aside from the RPG programming language you can also create [COBOL](https://en.wikipedia.org/wiki/COBOL#:~:text=COBOL%20(%2F%CB%88ko%CA%8Ab,2002%2C%20object%2Doriented%20language.)), [C](https://en.wikipedia.org/wiki/C_(programming_language)) and [C ++](https://en.wikipedia.org/wiki/C%2B%2B) source members.
 
 ![alt text](./images/crtmember.png)
 
@@ -142,11 +150,19 @@ You should see something like this
 
 ![alt text](./images/seu.png)
 
-That is IBM [SEU](https://www.nicklitten.com/course/what-is-seu-source-entry-utility/). This was the original *IDE* of the IBM I developers. Here just press enter and add the word **FILE** in the upper line, press enter again and you should have the new member.
+Don't panic!. This is the original way of doing things. Later I'll show how to use modern tools. But it is important for you to know about the green screen. Why? you may ask, well: *It always works*
+
+That is the IBM [SEU](https://www.nicklitten.com/course/what-is-seu-source-entry-utility/). It was the original *IDE* of the IBM I developers. Here just press ***enter*** + ***F10*** and add the word **FILE** in the upper line, press ***enter*** again and you should have the new member.
+
+> Believe it or not, i have seen programmers in the wild still using SEU.
 
 ![alt text](./images/created_member.png)
 
-Now we are going to use VsCode to edit it.
+Now we are going to use VsCode to edit it. Here you have the [Code for IBM i Docs](https://codefori.github.io/docs/quickstart/).
+
+Go to your library in the Code4i Object Browser and open the hello source in the qrpglesrc member
+
+![alt text](./images/open_hello.png)
 
 ***dspjoblog***
 
