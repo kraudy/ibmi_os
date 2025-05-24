@@ -26,15 +26,15 @@ Programs were written in low-level languages, which made them tightly coupled to
 
 Due to the increase in complexity and requirements, the limitations of low-level programming became evident. That's when higher-level languages like [Fortran](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/IBM_COBOL) and [RPG](https://en.wikipedia.org/wiki/IBM_RPG) came into play. The [compiler](https://en.wikipedia.org/wiki/Compiler) translated these high-level languages to machine-specific instructions. 
 
-Now we had an intermediary, the compiler, but here is the important part: *the compiled code still executed directly on the processor’s native instruction set*. If you change the CPU architecture or instruction set, all compiled programs just break.
+Now we had an intermediary, the *compiler*, but here is the important part: *the compiled code still executed directly on the processor’s native instruction set*. If you change the CPU architecture or instruction set, all compiled programs just break. Companies would not be too happy about that, especially big companies running 24/7 operations.
 
-There was a need for a better way to manage resources and scale; that's when the ideas of *LSI* (virtualization of storage), *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project) started emerging. 
+There was a need for a better way to manage resources and scale; that's when the idea of [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) started emerging with the *HLS* (Higher Level System) project, and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). 
 
-The main principle was to have a machine that natively executed high-level procedural languages (FORTRAN, COBOL, PL/i, APL, RPG) without interpretation. Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas, which led to the project being terminated. The seed of these ideas set a firm base for the future of IBM.
+The main principle was to have a machine that natively executed high-level procedural languages (FORTRAN, COBOL, PL/i, APL, RPG) without interpretation. Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas at the time, which led to the project being terminated. The seed of these ideas set a firm base for the future of IBM.
 
 But IBM kept the grind going. They released the [System/38](https://en.wikipedia.org/wiki/IBM_System/38) which actually had some of those ambitious ideas: programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). This system marked a revolutionary step in architecture by introducing a high-level *machine interface* (MI) and the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI).
 
-> The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the (System Support Program)[https://en.wikipedia.org/wiki/System_Support_Program] operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers.
+> The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the [System Support Program](https://en.wikipedia.org/wiki/System_Support_Program) operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers.
 
 The consequences of these ideas were huge: separation of high-level programming from specific instruction sets, translation of high-level instructions to low-level at compile time for no *interpretation* downtime, single-level-storage where programs, files and databases were treated as objects in the same virtual address space, and finally, a built-in relational database (DB2 Intro coming soon). No time for losers here.
 
@@ -82,7 +82,11 @@ A subsystem is similar to a job in the sense that it is an abstraction of the sy
 
 ## IBM I File system (not quite)
 
-On the IBM I there are no directories or files; everything is an **Object** (which basically means *something*). There are different kinds of objects (for example, a job is considered an object, the same goes for a table), but to really understand the IBM I object hierarchies (e.g: The file system) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
+On the IBM I there are no directories or files; everything is an **Object**, which you can view as *something* to *operate on*. Technically, an **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it.
+
+> This is similar to when you declare a variable with a type in a programming language like C: `int i = 0` => This means that at some address the machine will store a series of bits that represent the abstract data type **int**.
+
+There are different kinds of objects (for example, a job is considered an object, the same goes for a table), but to really understand the IBM I object hierarchies (e.g: The file system) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
 
 A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source of other objects to be compiled o created. 
 
