@@ -244,48 +244,6 @@ ILE Program Binder allows ***binding*** to bind several modules together to form
 
 The control language provides a consistent interface to all system functions. Thus, a programmer can tailor solutions using system functions without the end user or operator seeing what is being executed. The control language provides rich function and a consistent set of terminology and syntax. User-written commands can also be created. Most commands can be executed interactively, in a compiled CL program, or in a high-level language program. The ease of using CL and its rich function make it a productivity aid for programmers. CL programs allow the use of variables, error handling and access to the database. Programming functions include reading and writing to a display or database file, IF/THEN/ELSE logic, calling or being called from another program, and so on.
 
-## DB2
-
-Integrated DB2 Relational Database
-
-DB2/400 is a relational database by design but may be viewed by users in terms of either a relational model or a file model, depending on choice of interface (This is very important, like the F page of RPG programs see the database as files). Those choosing the relational model see tables and views while those using the file model see physical and logical files. The data resides in tables or physical files but may be seen in different sequences, with omissions or additions in logical views.
-
-> The same copy of data may be shared by applications using file and database interfaces. 
-
-The AS/400 system can be used for both traditional, transaction processing and decision support and data warehousing applications. This means you can actually use Bussines intelligency (BI) with you Power.
-
-Integration also allows the database commands and display interfaces to have a look and feel that is consistent with the rest of the system. This allows the database to exploit new system functions and hardware for improved availability, recovery, security, concurrency, and performance as they are introduced.
-
-
-Access Paths:
-Access paths may be defined for files to allow access in either keyed or arrival sequence order
-
-Support is provided for embedded static, dynamic, and extended dynamic SQL.
-
-Journal entries (i.e., records of database changes) can be searched and viewed interactively, and may be retrieved by a user program for further processing or analysis. This can lead to improved security and/or database integrity and is also an important component or open access to the database.
-
-Stored procedures:
-Provides the ability to distribute the application workloads between clients and servers. The ability to split an application program by executing the processing logic on the server and the presentation logic on the client can provide increased performance over traditional requester access. These improvements can be dramatic for applications requiring intermediate processing of data, which can be performed at the server locally, instead of remotely at the client.
-
-Triggers:
-Provides for automatic program/procedure execution, based on user-specified rules, before and/or after database modifications.
-
-X/Open Call Level Interface to SQL:
-Support of the X/Open standard for an SQL Call Level Interface (CLI) allows users to easily access DB2 for OS/400 SQL functions directly from high-level languages (HLL) without performing an SQL precompile. This standard CLI support also allows SQL access from languages such as C++ that currently do not have another SQL interface or precompiler.
-
-Multiple-level concurrency control:
-Provides read stability, cursor stability, uncommitted read, and no commit isolation levels with row-level locking to support large numbers of users in complex application scenarios.
-
-Advanced SQL optimizer:
-Converts SQL requests into optimally efficient database access methods using proven mathematical rules as well as query specific cost estimates. Optimal performance is maintained over time by the automatic rebind feature, which redetermines access methods based upon changes to the database objects and statistics.
-
-Explain function:
-Examines and reports the access method used by individual SQL queries. The output can be examined to determine whether the access method generated for the query could be improved by query and/or database changes.
-
-Data Warehouse:
-The AS/400 system and DB2 Multisystem for OS/400 provide a scalable solution for data warehousing that spans from the smallest datamart to the largest enterprise data warehouse
-Data Mining is a key technology in allowing a business to take full advantage of the information that is hidden in their data. Data Mining is the automated discovery of useful information held within large amounts of transaction data
-
 ## IBM Highlights
 
 * Single Integrated Operating System for all models
@@ -311,7 +269,6 @@ Openness is my favorite one.
 The end.
 
 ## Extras
-
 
 Data Areas: 
 The operating system supports local and global data area objects. Global data areas can be accessed and updated by various programs within a single job or across jobs. A local data area can also be used to pass information operating within a job or to programs the job has submitted to batch. Data areas are also directly supported by some HLLs.
