@@ -68,9 +68,15 @@ Here starts the IBM I guideline.
 
 ## Explaining Objects
 
-On the IBM I, everything is an **Object**, which you can view as *something* to *operate on*. 
+Remember the idea of a [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS))? Well, since the hardware natively gives a single virtual abastraction of all the system resources to the operating system, the logic move would be to take advantage of this so that everything in the IBM I leverages this power of abstraction. The is when the concept of **Object** is born. 
 
-An **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition.
+> Modern system even have [Multiple Virtual Storage (MVS)](https://en.wikipedia.org/wiki/MVS)
+
+> Single Virtual Storage (SVS) means taht A\auxiliary storage capacity can be added as needed without changing current application programs.
+
+An **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition. 
+
+> The non definition definition: An object is *something* to *operate on*.
 
 > This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
 
@@ -88,6 +94,8 @@ Pointers address objects but they use a ***context object*** to resolve names wh
 
 Contextualized to the IBM I, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
 
+> The library list control how the system accesses objects
+
 > Extra: Since everything is an object on the IBM I, you can have security at the object level. Which means that the pointer addressing the object is first checked to be autorized or rejected to perform the operations. That is really nice.
 
 ## IBM I Object system, not File system
@@ -96,11 +104,13 @@ As you may see, the whole idea of the object architecture is the use of data and
 
 To really understand the IBM I object hierarchies (e.g: The file system, not quite though) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
 
-A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source of other objects to be compiled o created. 
+A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source or *description* of other objects to be compiled o created. 
 
 A Source PF is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code of a program, table or any other object source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
 
 Every object **seen** by the system is allocated in a **library** (a library is similar to a folder), it is an object used to store all other kinds of objects (except another library). A library can have compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other things.
+
+The libraries are used to locate any object independently of where they are stored.
 
 At this point, you should have the background necessary to tackle the IBM i.
 
@@ -222,4 +232,89 @@ Go to your library in the Code4i Object Browser and open the hello source in the
 
 ## OPM and ILE (Maybe just mention and add it to the rpg repo)
 
+The Integrated Language Environment (ILE) allows the integrations of multiple applications from multiple independent sources.
 
+ILE exploits high-level language (HLL) similar to how the Object system exploits Single Virtual Storage (SVS)
+
+ILE compilers create modules (object type *MODULE), 
+
+ILE Program Binder allows ***binding*** to bind several modules together to form a program object. Modules from any of the ILE compilers (C, CL, COBOL, and RPG) can be bound together
+
+## Control Language (CL)
+
+The control language provides a consistent interface to all system functions. Thus, a programmer can tailor solutions using system functions without the end user or operator seeing what is being executed. The control language provides rich function and a consistent set of terminology and syntax. User-written commands can also be created. Most commands can be executed interactively, in a compiled CL program, or in a high-level language program. The ease of using CL and its rich function make it a productivity aid for programmers. CL programs allow the use of variables, error handling and access to the database. Programming functions include reading and writing to a display or database file, IF/THEN/ELSE logic, calling or being called from another program, and so on.
+
+## DB2
+
+Integrated DB2 Relational Database
+
+DB2/400 is a relational database by design but may be viewed by users in terms of either a relational model or a file model, depending on choice of interface (This is very important, like the F page of RPG programs see the database as files). Those choosing the relational model see tables and views while those using the file model see physical and logical files. The data resides in tables or physical files but may be seen in different sequences, with omissions or additions in logical views.
+
+> The same copy of data may be shared by applications using file and database interfaces. 
+
+The AS/400 system can be used for both traditional, transaction processing and decision support and data warehousing applications. This means you can actually use Bussines intelligency (BI) with you Power.
+
+Integration also allows the database commands and display interfaces to have a look and feel that is consistent with the rest of the system. This allows the database to exploit new system functions and hardware for improved availability, recovery, security, concurrency, and performance as they are introduced.
+
+
+Access Paths:
+Access paths may be defined for files to allow access in either keyed or arrival sequence order
+
+Support is provided for embedded static, dynamic, and extended dynamic SQL.
+
+Journal entries (i.e., records of database changes) can be searched and viewed interactively, and may be retrieved by a user program for further processing or analysis. This can lead to improved security and/or database integrity and is also an important component or open access to the database.
+
+Stored procedures:
+Provides the ability to distribute the application workloads between clients and servers. The ability to split an application program by executing the processing logic on the server and the presentation logic on the client can provide increased performance over traditional requester access. These improvements can be dramatic for applications requiring intermediate processing of data, which can be performed at the server locally, instead of remotely at the client.
+
+Triggers:
+Provides for automatic program/procedure execution, based on user-specified rules, before and/or after database modifications.
+
+X/Open Call Level Interface to SQL:
+Support of the X/Open standard for an SQL Call Level Interface (CLI) allows users to easily access DB2 for OS/400 SQL functions directly from high-level languages (HLL) without performing an SQL precompile. This standard CLI support also allows SQL access from languages such as C++ that currently do not have another SQL interface or precompiler.
+
+Multiple-level concurrency control:
+Provides read stability, cursor stability, uncommitted read, and no commit isolation levels with row-level locking to support large numbers of users in complex application scenarios.
+
+Advanced SQL optimizer:
+Converts SQL requests into optimally efficient database access methods using proven mathematical rules as well as query specific cost estimates. Optimal performance is maintained over time by the automatic rebind feature, which redetermines access methods based upon changes to the database objects and statistics.
+
+Explain function:
+Examines and reports the access method used by individual SQL queries. The output can be examined to determine whether the access method generated for the query could be improved by query and/or database changes.
+
+Data Warehouse:
+The AS/400 system and DB2 Multisystem for OS/400 provide a scalable solution for data warehousing that spans from the smallest datamart to the largest enterprise data warehouse
+Data Mining is a key technology in allowing a business to take full advantage of the information that is hidden in their data. Data Mining is the automated discovery of useful information held within large amounts of transaction data
+
+## IBM Highlights
+
+* Single Integrated Operating System for all models
+* Investment Protection
+* Client/Server Support
+* Integrated DB2 Relational Database
+* Transaction Processing
+* Batch Processing
+* Ease of Installation, Use, and Maintenance
+* Extensive Run-time Application Function
+* Productive Application Development Environment
+* Integrated Language Environment (ILE)
+* Enabling Technologies
+* Openness
+* High System Availability
+* Comprehensive Security for System Resources
+* Interfaces to System Functions
+* Multiple Operating Environments
+* Connectivity to Remote Devices, Systems and Networks
+
+Openness is my favorite one. 
+
+The end.
+
+## Extras
+
+
+Data Areas: 
+The operating system supports local and global data area objects. Global data areas can be accessed and updated by various programs within a single job or across jobs. A local data area can also be used to pass information operating within a job or to programs the job has submitted to batch. Data areas are also directly supported by some HLLs.
+
+Data Queues:
+The operating system supports a call interface to send and receive information from a data queue object. This is designed to handle job-to-job communication with a high volume of requests. Usually used with external request like socket cummunication or MQ Queues
