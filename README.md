@@ -66,7 +66,45 @@ Here starts the IBM I guideline.
 
 ![alt text](./images/the_green_screen.png)
 
-## Program execution
+## Explaining Objects
+
+On the IBM I, everything is an **Object**, which you can view as *something* to *operate on*. 
+
+An **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition.
+
+> This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
+
+Here is an interesting point to note: When a command that modifies an object is executed, it actually performs a series of high-level microcode instructions that modify the object attributes or composition. This means, that the high-level instruction set is intended to perform operations directly on these abstractions called **objects** instead of directly doing register/memory operations like the low-level instruction set that actually execute operations.
+
+What gives? Well, objects can be: programs, jobs, tables, cursors, data queues, memory spaces, etc. The memory space is the only object that can be manipulated at the byte level by instructions like the legendary ***MOVE*** operation.
+
+> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log on the system.
+
+To address (locate) these objects, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
+
+> As you may see, IBM took the idea of abstract data type like int, float, char, etc, to a whole new level.
+
+Pointers address objects but they use a ***context object*** to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** which is basically a list of pointers to various ***context objects*** 
+
+Contextualized to the IBM I, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
+
+> Extra: Since everything is an object on the IBM I, you can have security at the object level. Which means that the pointer addressing the object is first checked to be autorized or rejected to perform the operations. That is really nice.
+
+## IBM I Object system, not File system
+
+As you may see, the whole idea of the object architecture is the use of data and description of that data (meta-data) that defines how it can be interacted with and manipulated. In this way, the IBM I has no need of a traditional file system
+
+To really understand the IBM I object hierarchies (e.g: The file system, not quite though) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
+
+A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source of other objects to be compiled o created. 
+
+A Source PF is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code of a program, table or any other object source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+
+Every object **seen** by the system is allocated in a **library** (a library is similar to a folder), it is an object used to store all other kinds of objects (except another library). A library can have compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other things.
+
+At this point, you should have the background necessary to tackle the IBM i.
+
+## Program execution (and Resource allocation?)
 
 A program is basically a stream of instructions, an object definition and some user data.
 
@@ -103,42 +141,6 @@ When the IBM I allocates resources for a program on a job is called an **activat
 We know that the IBM I allocates resources for a program in a job, but how does it allocates the resources for the job itself? That's where the **subsystems** come into play.
 
 A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** programs, it is used to spawn jobs, which in turn will activate programs to be executed. 
-
-## Explaining Objects
-
-On the IBM I, everything is an **Object**, which you can view as *something* to *operate on*. Technically, an **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it.
-
-> This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
-
-Here is an interesting point to note: When a command that modifies an object is executed, it actually performs a series of high-level microcode instructions that modify the object attributes or composition. This means, that the high-level instruction set is intended to perform operations directly on these abstractions called **objects** instead of directly doing register/memory operations like the low-level instruction set.
-
-What gives? Well, objects can be: programs, jobs, tables, cursors, data queues, memory spaces, etc. The memory space is the only object that can be manipulated at the byte level by instructions like the legendary ***MOVE*** operation.
-
-> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log on the system.
-
-To address these objects, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
-
-> As you may see, IBM took the idea of abstract data type like int, float, char, etc to a whole new level.
-
-Pointers address objects but they use a ***context object*** to resolve names which allow logical object substitution (which are zero cost movements). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** which is basically a list of pointers to various ***context objects*** 
-
-Now, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
-
-> Extra: Since everything is an object on the IBM I, you can have security at the object level. Which means that the pointer addressing the object is first checked to be autorized or rejected to perform the operations. That is really nice.
-
-## IBM I Object system, not File system
-
-As you may see, the whole idea of the object architecture is the use of data and description of that data (meta-data) that defines how it can be interacted with and manipulated. In this way, the IBM I has no need of a traditional file system
-
-To really understand the IBM I object hierarchies (e.g: The file system, not quite though) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
-
-A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source of other objects to be compiled o created. 
-
-A Source PF is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code of a program, table or any other object source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
-
-Every object **seen** by the system is allocated in a **library** (a library is similar to a folder), it is an object used to store all other kinds of objects (except another library). A library can have compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other things.
-
-At this point, you should have the background necessary to tackle the IBM i.
 
 ## Getting the tools
 
