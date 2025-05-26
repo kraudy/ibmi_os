@@ -4,9 +4,20 @@ This is intended to give a guideline on the eternal IBM i operating system.
 
 ![alt text](./images/ibmi_logo.png)
 
-## Table of content
+## Table of contents
 
-(Soon)
+- [Starting from the bottom](#starting-from-the-bottom)
+- [Toward Higher-Level Abstraction](#toward-higher-level-abstraction)
+- [The legendary AS/400](#the-legendary-as400)
+- [Finally the IBM I (not quite though)](#finally-the-ibm-i-not-quite-though)
+- [Explaining Objects](#explaining-objects)
+- [IBM I Object system, not File system](#ibm-i-object-system-not-file-system)
+- [Program execution (and Resource allocation?)](#program-execution-and-resource-allocation)
+- [Resource allocation](#resource-allocation)
+- [Getting the tools](#getting-the-tools)
+- [Facing the IBM I](#facing-the-ibm-i)
+- [IBM Highlights](#ibm-highlights)
+- [The end](#the-end)
 
 ## Starting from the bottom
 
@@ -281,6 +292,12 @@ It is also possible to create the member, edit the source code and compile it di
 * Multiple Operating Environments
 * Connectivity to Remote Devices, Systems and Networks
 
-Openness is my favorite one. 
+***Openness*** is my favorite one. This has been a core IBM value for a long time, what happens is that people usually don't know about it.
 
-That's it, the end. Thanks for reading.
+## The end
+
+That's it. It was a long run, hope you find it useful.
+
+If you have any suggestions open an issue and i'll check it out
+
+Thanks for reading.
