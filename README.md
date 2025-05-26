@@ -36,7 +36,7 @@ But IBM kept the grind going. They released the [System/38](https://en.wikipedia
 
 This system marked a revolutionary step in architecture by introducing a high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI) and the implementation of the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) where all addressable objects and segments are in directly accessible memory with no concept of secondary storage, the movement of segments between primary and secondary storage to create this virtual memory environment is performed by the system microcode.
 
-> If you are like me, you may be asking yourself: How does the system keeps track of the memory segments and move segments between secondary and primary memory? Well, it does a hashing XOR on the segment id bits to create and index and store it in a hashing table. (Other systems do the same). This provides and mapping from the adress space to the hashing table. There is another table that maps these virtul addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. There are a lot of cool performance tricks under the hood on this topic.
+> If you are like me, you may be asking yourself: How does the system keeps track of the memory segments and move segments between secondary and primary memory? Well, it does a hashing XOR on the segment id bits to create and index and store it in a hashing table. (Other systems do the same). This provides and mapping from the adress space to the hashing table. There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. There are a lot of cool performance tricks under the hood on this topic.
 
 The large size of the virtual space make posible the use of identifiers that are never reused, so there is no problem with dangling references.
 
@@ -46,7 +46,7 @@ The unique ID is the virtual address used to access a specific object, segment, 
 
 The consequences of these ideas were huge: separation of high-level programming from specific instruction sets, translation of high-level instructions to low-level at compile time for no *interpretation* downtime, single-level-storage where programs, files and databases were treated as objects in the same virtual address space, and finally, a built-in relational database (DB2 Intro coming soon). No time for losers here.
 
->The idea of modularization and separations at different levels of abstraction is a patter found on many areas of computer science. For example: the network stack ([OSI Model](https://en.wikipedia.org/wiki/OSI_model), [TCP/IP](https://en.wikipedia.org/wiki/Internet_protocol_suite) ) and the internet ([REST arch](https://en.wikipedia.org/wiki/REST)).
+>The idea of modularization and separations at different levels of abstraction is a pattern found on many areas of computer science. For example: the network stack ([OSI Model](https://en.wikipedia.org/wiki/OSI_model), [TCP/IP](https://en.wikipedia.org/wiki/Internet_protocol_suite) ) and the internet ([REST arch](https://en.wikipedia.org/wiki/REST)).
 
 ## The legendary AS/400
 
@@ -56,7 +56,7 @@ Built on the System/38’s architecture and after refining and extending its con
 
 Programs were compiled into a high-level instruction set called Intermediate Language (IL). This IL was translated into native machine code by the Licensed Internal Code (LIC), a firmware layer that handled the low-level hardware operations.
 
-## Finally the IBM I
+## Finally the IBM I (not quite though)
 
 The AS/400 evolved into the IBM i platform. The OS/400 was renamed to i5/OS and then to the [IBM i](https://en.wikipedia.org/wiki/IBM_i)
 
@@ -68,11 +68,11 @@ Here starts the IBM I guideline.
 
 ## Explaining Objects
 
-Remember the idea of a [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS))? Well, since the hardware natively gives a single virtual abastraction of all the system resources to the operating system, the logic move would be to take advantage of this so that everything in the IBM I leverages this power of abstraction. The is when the concept of **Object** is born. 
+Remember the idea of a [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS))? Well, since the hardware natively gives a single virtual abastraction of all the system resources to the operating system, the obvious move would be to take advantage of this so that everything in the IBM I leverages this power of abstraction. That is when the concept of ***Object*** is born. 
 
 > Modern system even have [Multiple Virtual Storage (MVS)](https://en.wikipedia.org/wiki/MVS)
 
-> Single Virtual Storage (SVS) means taht A\auxiliary storage capacity can be added as needed without changing current application programs.
+> Single Virtual Storage (SVS) means that auxiliary storage capacity can be added as needed without changing current application programs.
 
 An **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition. 
 
@@ -84,7 +84,7 @@ Here is an interesting point to note: When a command that modifies an object is 
 
 What gives? Well, objects can be: programs, jobs, tables, cursors, data queues, memory spaces, etc. The memory space is the only object that can be manipulated at the byte level by instructions like the legendary ***MOVE*** operation.
 
-> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log on the system.
+> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log in on the system.
 
 To address (locate) these objects, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
 
@@ -104,53 +104,49 @@ As you may see, the whole idea of the object architecture is the use of data and
 
 To really understand the IBM I object hierarchies (e.g: The file system, not quite though) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
 
-A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A Source PF is a kind of table used to store the source or *description* of other objects to be compiled o created. 
+A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A ***Source PF*** is a kind of table used to store the source or *description* of other objects to be compiled o created. 
 
-A Source PF is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* Source PF table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code of a program, table or any other object source. This is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+A ***Source PF*** is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* ***Source PF*** table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code/definition of a program, table or any other object. 
 
-Every object **seen** by the system is allocated in a **library** (a library is similar to a folder), it is an object used to store all other kinds of objects (except another library). A library can have compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other things.
+> This  *multi-member* idea is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
 
-The libraries are used to locate any object independently of where they are stored.
-
-At this point, you should have the background necessary to tackle the IBM i.
+A **library** is used to group or contextualized and locate objects independently of where they are stored (a library is similar to a folder, not quiet though). It can sttore compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other objects.
 
 ## Program execution (and Resource allocation?)
 
-A program is basically a stream of instructions, an object definition and some user data.
+A program is basically a stream of instructions, an object definition and some user data which can also be seen as a compiled unit of execution.
 
-A program can be also be seen as a compiled unit of execution.
-
-There are two points to a program lifecycle: **Activation** and **Invocation**
+There are two points to a program execution: **Activation** and **Invocation**
 
 **Activation** Causes static storage for the program to be allocated and initialized: Gloabal variables and files are made addressable (This is usually the *data* or *static* segment of memory. Check [Address space](https://en.wikipedia.org/wiki/Address_space)).
 
-A process data structured called ***The Process Static Storage Area (PSSA)*** contains an activation entry for each activated program in the job.
+> A process data structured contains an activation entry for each activated program in the job.
 
-**Invocation** Occurs when there is a transfer of control to the program. At invocation time, dynamic storage is allocated (Usually in the *heap* memory segment. Check [Address space](https://en.wikipedia.org/wiki/Address_space)) and initialized in a process data structure called ***The Process Automaitc Storage Area (PASA)***
+**Invocation** Occurs when there is a transfer of control to the program. At invocation time, dynamic storage is allocated (Usually in the *heap* memory segment. Check [Address space](https://en.wikipedia.org/wiki/Address_space)) 
 
-Each invocation entry contains status information, a pointer to the previous invocation entry, a pointer to the program instructions and the autmatic storage. After the invocation entry is allocated and initialized, control is transfer to the program at its ***entry point*** (also called ***PEP**)
+> Dynamic process data is initialized in a process data structure.
+
+Each invocation entry contains status information, a pointer to the previous invocation entry, a pointer to the program instructions and the automatic storage. After the invocation entry is allocated and initialized, control is transfer to the program at its ***entry point*** (also called ***PEP**)
 
 ***Activation*** can be done explicity or implicit. If a **CALL** is made to a program that has not been activated, the hardware automatically does the activation and then the invocation.
 
-The main purpose of an operating sytem is managing resources (CPU, Disk, Memory, etc); this includes abstracting and assigning them where needed.
-
-To execute a program, the OS needs to allocate the resources needed for it, but it does not allocate them directly to the program; rather, an abstraction is used: [**The job**](https://en.wikipedia.org/wiki/Job_(computing)).
-
-The system allocates resources to the job, and the program is basically **loaded** into the job resources. Now the program can be executed through the job resources. Really cool stuff.
-
-*A job can be viewed as an abstraction of allocated resources*. By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a *process*. 
-
-> During a process execution, the instructions and data will be loaded from memory into the registers to be executed by the processor. Modern operating systems fetch a large number of instructions, generate a dependency graph and try to execute them in a parallel and out-of-order manner. Every time you run a program, it never runs the same twice, even though it gives the same result. That's kind of amazing.
-
-Till this point, the description of an operating system is mostly the same for any modern system. Now comes what is specific to the IBM i OS.
-
 ## Resource allocation
 
-When the IBM I allocates resources for a program on a job is called an **activation** (this is the same idea of a process). A job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource the programs to be executed may need. The job sees them all as part of the same virtual memory. To liberate these resources, it is only necessary to delete the activation group, which, effectively, is a **deactivation**.
+The main purpose of an operating sytem is managing resources (CPU, Disk, Memory, etc); this includes abstracting and assigning them where needed.
+
+To execute a program, the OS needs to allocate the resources needed for it, but it does not allocate them directly to the program; rather, an abstraction is used: [**The job**](https://en.wikipedia.org/wiki/Job_(computing)). This is the **Activation**.
+
+The system allocates resources to the job, and the program is basically **loaded** (**activated**) into the job resources. Now the program can be executed (**invocated**) through the job resources. Really cool stuff.
+
+**A job can be viewed as an abstraction of allocated resources**. By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a *process*. 
+
+> During a process execution, the instructions and data will be loaded from memory into the registers to be executed by the processor. Modern operating systems fetch a large number of instructions, generate a dependency graph and try to execute them in a parallel in an out-of-order manner. Every time you run a program, it never runs the same way twice, even though it gives the same result. That's kind of amazing.
+
+When the IBM I allocates resources for a program on a job is called an **activation** (this is the same idea of a process). A job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource/objects the programs to be **invoked** may need. The job sees them all as part of the same virtual memory (thanks to Single virtual Sotorage (SVS)). To liberate these resources, it is only necessary to delete the activation group, which, effectively, is a **deactivation**.
 
 We know that the IBM I allocates resources for a program in a job, but how does it allocates the resources for the job itself? That's where the **subsystems** come into play.
 
-A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** programs, it is used to spawn jobs, which in turn will activate programs to be executed. 
+A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** programs, it is used to spawn jobs, which in turn will activate programs to be **invoked**. 
 
 ## Getting the tools
 
@@ -164,11 +160,17 @@ We also need a modern way to edit code. [VsCode](https://code.visualstudio.com/)
 
 You can check this nice [tutorial by Marco](https://github.com/MarcoDeSenas/IBMi-topics-thanks-to-pub400/blob/main/HowTo/Workstation%20tools.md) that describes the three previous steps.
 
+At this point, you should have the background necessary to tackle the IBM i.
+ 
 ## Facing the IBM I
 
 Once inside, we see the iconic green screen. What is this? Well, it is a terminal, like the [Windows CMD](https://en.wikipedia.org/wiki/Cmd.exe) or the Linux [bash shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). What is the purpose? To send commands to the operating system like any other shell. The IBM I shell is called **QCMD**, you can actually do a ***CALL QCMD*** to directly invoke the terminal.
 
 > A **CALL** returns a system pointer that allows the program to be called.
+
+These commands are called the **Control Language (CL)**. It provides a consistent interface to all system functions (user-written commands can also be created). This language provides rich function and a consistent set of terminology and syntax. Most commands can be executed interactively (***F4***, you'll see it later) or from a high-level language program (***SYSTEM*** API). 
+
+> You can even create CL programs, which allow the use of variables, error handling and access to the database. Programming functions include reading and writing to a database file, IF/THEN/ELSE logic, calling or being called from another program, etc.
 
 IBM I has a utility for navigation called [***PDM (Programming Development Manager)***](https://en.wikipedia.org/wiki/Programming_Development_Manager). PDM is invoked with ***STRPDM***
 
@@ -180,9 +182,9 @@ There you can select an option to work with libraries, objects or members. But y
 * work with objects: ***wrkobjpdm*** + ***F4***
 * work with members: ***wrkmbrpdm*** + ***F4***
 
-> Almost all IBM I commands can be prompted with **F4**, this will show you the minimum parameters required to execute them. Some commands have extra parameters that can be viewed with **F10** and to change the presentation of the parameters press **F11**
+> As i told you, almost all IBM I commands can be prompted with **F4**, this will show you the minimum parameters required to execute them. Some commands have extra parameters that can be viewed with **F10** and to change the presentation of the parameters press **F11**
 
-These commands are the basics for navigating the IBM I.
+These *pdm* commands are the basics for navigating the IBM I when you are starting.
 
 Inside PUB400 you should have two libaries with the name of your user plus a 1 and a 2 like this
 
@@ -226,23 +228,21 @@ Go to your library in the Code4i Object Browser and open the hello source in the
 
 ![alt text](./images/open_hello.png)
 
-***dspjoblog***
+Add this rpgle code to the member
+
+```rpg
+**free
+Ctl-opt DftActGrp(*No);
+Dsply 'Hello world!, edited';
+*inlr = *on;
+return;
+```
+
+I have another repo (RPG Intro here) if you want to really understand this code.
 
 ## Now, using Code4i
 
-## OPM and ILE (Maybe just mention and add it to the rpg repo)
-
-The Integrated Language Environment (ILE) allows the integrations of multiple applications from multiple independent sources.
-
-ILE exploits high-level language (HLL) similar to how the Object system exploits Single Virtual Storage (SVS)
-
-ILE compilers create modules (object type *MODULE), 
-
-ILE Program Binder allows ***binding*** to bind several modules together to form a program object. Modules from any of the ILE compilers (C, CL, COBOL, and RPG) can be bound together
-
-## Control Language (CL)
-
-The control language provides a consistent interface to all system functions. Thus, a programmer can tailor solutions using system functions without the end user or operator seeing what is being executed. The control language provides rich function and a consistent set of terminology and syntax. User-written commands can also be created. Most commands can be executed interactively, in a compiled CL program, or in a high-level language program. The ease of using CL and its rich function make it a productivity aid for programmers. CL programs allow the use of variables, error handling and access to the database. Programming functions include reading and writing to a display or database file, IF/THEN/ELSE logic, calling or being called from another program, and so on.
+Just create the member and pase the same code
 
 ## IBM Highlights
 
