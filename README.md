@@ -204,9 +204,11 @@ Press ***F5*** to refresh and the new source PF should be in your library
 
 > Hit ***Shift*** + ***F11*** if youn can't see the ***OPT 12***
 
-Do ***OPT 12*** on the source PF. Here you can do ***F6*** directly to create a new source PF member. This member is an [RPGLE](https://en.wikipedia.org/wiki/IBM_RPG) source code called **HELLO**.
+Do ***OPT 12*** on the source PF. 
 
-> Aside from the RPG programming language you can also create [COBOL](https://en.wikipedia.org/wiki/COBOL#:~:text=COBOL%20(%2F%CB%88ko%CA%8Ab,2002%2C%20object%2Doriented%20language.)), [C](https://en.wikipedia.org/wiki/C_(programming_language)) and [C ++](https://en.wikipedia.org/wiki/C%2B%2B) source members.
+Once inside the source PF, you can do ***F6*** directly to create a new source PF member. This member is an [RPGLE](https://en.wikipedia.org/wiki/IBM_RPG) source code called **HELLO**.
+
+> Aside from the RPG programming language you can also use other languages like [COBOL](https://en.wikipedia.org/wiki/COBOL#:~:text=COBOL%20(%2F%CB%88ko%CA%8Ab,2002%2C%20object%2Doriented%20language.)), [C](https://en.wikipedia.org/wiki/C_(programming_language)) and [C ++](https://en.wikipedia.org/wiki/C%2B%2B).
 
 ![alt text](./images/crtmember.png)
 
@@ -230,6 +232,8 @@ Go to your library in the Code4i Object Browser and open the hello source in the
 
 Add this rpgle code to the member
 
+I have another repo (RPG Intro here) if you want to really understand this code.
+
 ```rpg
 **free
 Ctl-opt DftActGrp(*No);
@@ -237,12 +241,25 @@ Dsply 'Hello world!, edited';
 *inlr = *on;
 return;
 ```
+![alt text](./images/vscode_helloworld.png)
 
-I have another repo (RPG Intro here) if you want to really understand this code.
+Just save it and now we'll compile it the old fashion way.
 
-## Now, using Code4i
+Do ***OPT 14 (compile) + F4*** on the *HELLO* source member. 
 
-Just create the member and pase the same code
+![alt text](./images/compile_hello.png)
+
+> This option executed the following CL (Control lanaguage, remember?) command directly ***CRTBNDRPG PGM(YOURLIB/HELLO) SRCFILE(YOURLIB/QRPGLESRC) SRCMBR(HELLO) DFTACTGRP(*NO) REPLACE(*YES)***
+
+You should see the compiled object in your library
+
+![alt text](./images/compiled_hello.png)
+
+Do ***OPT 16 (run)*** on the *HELLO* pgm. The output should be like this.
+
+![alt text](./images/hello_output.png)
+
+It is also possible to create the member, edit the source code and compile it directly from the Code4i VsCode plugin with some other modern techniques. For that check my [RPGLE intro]() or the [IBM I pipeline](https://github.com/kraudy/IBM-i-pipeline)
 
 ## IBM Highlights
 
@@ -266,12 +283,4 @@ Just create the member and pase the same code
 
 Openness is my favorite one. 
 
-The end.
-
-## Extras
-
-Data Areas: 
-The operating system supports local and global data area objects. Global data areas can be accessed and updated by various programs within a single job or across jobs. A local data area can also be used to pass information operating within a job or to programs the job has submitted to batch. Data areas are also directly supported by some HLLs.
-
-Data Queues:
-The operating system supports a call interface to send and receive information from a data queue object. This is designed to handle job-to-job communication with a high volume of requests. Usually used with external request like socket cummunication or MQ Queues
+That's it, the end. Thanks for reading.
