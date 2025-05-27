@@ -12,7 +12,7 @@ This is intended to give a guideline on the eternal IBM i operating system.
   - [The System/38](#the-system38)
 - [The legendary AS/400](#the-legendary-as400)
   - [Inside the 400](#inside-the-400)
-  - [Finally the IBM I (not quite though)](#finally-the-ibm-i-not-quite-though)
+- [The IBM I](#the-ibm-i)
   - [Explaining Objects](#explaining-objects)
   - [IBM I Object system, not File system](#ibm-i-object-system-not-file-system)
   - [Program execution (and Resource allocation?)](#program-execution-and-resource-allocation)
@@ -66,21 +66,31 @@ Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architec
 
 ## Inside the 400
 
-This system marked a revolutionary step in IBM architecture by introducing a high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI) and the implementation of the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) where all addressable objects and segments are in directly accessible memory with no concept of secondary storage, the movement of segments between primary and secondary storage to create this virtual memory environment is performed by the system microcode. Cool stuff.
+This system marked a revolutionary step in IBM architecture by introducing a high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI). This is like a virtual machine to the system and where the concept of ***Object*** lives, we'll discuss that later. This virual interface is supported by the System Licensed Internal Code (SLIC), written in [C++](https://en.wikipedia.org/wiki/C%2B%2B) and assembler. 
+
+> This machine interfaced allowed IBM to move from the 48­bit CISC (IMPI) to the 64­bit RISC (PowerPC) processor architecture without users needing to recompile any program.
+
+It also implemented the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) where all addressable objects and segments are in directly accessible memory with no concept of secondary storage, the movement of segments between primary and secondary storage to create this virtual memory environment is performed by the system microcode. Cool stuff.
 
 > The system keeps track of the virtual memory segments by doing a hashing XOR on the segment unique id bits to create an index and store it in a hashing table. (Other systems do the same). There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. Since the addresses of virtual memory can be very large, there is no problem of overlapping.
 
-> The operating system was the Integrated Operating System (OS/400)
+Programs were compiled into a high-level instruction set which in turn was translated into native machine code by the firmware layer that handled the low-level operations.
 
-Programs were compiled into a high-level instruction set called Intermediate Language (IL). This IL was translated into native machine code by the Licensed Internal Code (LIC), a firmware layer that handled the low-level hardware operations.
+The operating system of this machine was the Integrated Operating System (OS/400). Later, the AS/400 evolved into the iSeries, System I and now [IBM Power Systems](https://en.wikipedia.org/wiki/IBM_Power_Systems). The OS/400 was renamed to i5/OS and then to the [IBM i](https://en.wikipedia.org/wiki/IBM_i). 
 
-## Finally the IBM I (not quite though)
+> IBM likes to change names a lot.
 
-The AS/400 evolved into the IBM i platform. The OS/400 was renamed to i5/OS and then to the [IBM i](https://en.wikipedia.org/wiki/IBM_i)
+# The IBM I
 
-> The AS/400 was later renamed to iSeries and now is called [IBM Power Systems](https://en.wikipedia.org/wiki/IBM_Power_Systems)
+With the release of IBM POWER 6 systems, IBM finally finished the merge of the System I and [System p](https://en.wikipedia.org/wiki/IBM_System_p) hardware. Today it is possible to run [IBM i](https://en.wikipedia.org/wiki/IBM_i), [AIX](https://en.wikipedia.org/wiki/IBM_AIX) and [Linux](https://en.wikipedia.org/wiki/Linux) on the IBM POWER systems. 
 
-Here starts the IBM I guideline.
+> This layout: **IBM I/AIX** is what you usually see in most companies nowadays and is mostly taken for granted.
+
+> POWER: Performance Optimized With Enhanced RISC
+
+The man behind this merge was [Frank Soltis](https://en.wikipedia.org/wiki/Frank_Soltis)
+
+Which, is actually the topic of this repo. Here starts the IBM I guideline.
 
 ![alt text](./images/the_green_screen.png)
 
