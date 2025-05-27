@@ -9,7 +9,9 @@ This is intended to give a guideline on the eternal IBM i operating system.
 - [Abstractions](#abstractions)
   - [Starting from the bottom](#starting-from-the-bottom)
   - [Toward Higher-Level Abstraction](#toward-higher-levels)
+  - [The System/38](#the-system38)
 - [The legendary AS/400](#the-legendary-as400)
+  - [Inside the 400](#inside-the-400)
   - [Finally the IBM I (not quite though)](#finally-the-ibm-i-not-quite-though)
   - [Explaining Objects](#explaining-objects)
   - [IBM I Object system, not File system](#ibm-i-object-system-not-file-system)
@@ -42,25 +44,31 @@ Due to the increase in complexity and requirements, the limitations of low-level
 
 Now we had an intermediary layer: the *compiler*. But here is the important part: *the compiled code still executed directly on the processor’s native instruction set*. If you change the CPU architecture or instruction set, all compiled programs just break. Companies would not be too happy about that, especially big companies running 24/7 operations.
 
-There was a need for a better way to manage resources and scale; that's when the idea of [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). This movement towards a unified product line was called [***Project Fort Knox***](https://en.wikipedia.org/wiki/IBM_AS/400#Fort_Knox)
+There was a need for a better way to manage resources and scale; that's when the idea of [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). This movement towards a unified IBM product line was called [***Project Fort Knox***](https://en.wikipedia.org/wiki/IBM_AS/400#Fort_Knox)
 
-The main principle was to have a machine that *natively* executed high-level procedural languages (FORTRAN, COBOL, PL/i, APL, RPG) without interpretation (like the [Java virtual machine (JVM)](https://en.wikipedia.org/wiki/Java_virtual_machine)). Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas at the time, which led to the ***Project Fort Knox*** being terminated. The seed of these ideas set a firm base for the future of IBM.
+The main principle was to have a machine that *natively* executed high-level procedural languages ([FORTRAN](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/COBOL), [PL/i](https://en.wikipedia.org/wiki/PL/I), [APL](https://en.wikipedia.org/wiki/APL_(programming_language)), [RPG](https://en.wikipedia.org/wiki/IBM_RPG)) without interpretation (like the [Java virtual machine (JVM)](https://en.wikipedia.org/wiki/Java_virtual_machine)). Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas at the time, which led to the ***Project Fort Knox*** being terminated. 
 
-But IBM kept the grind going with their [***Project Silverlake***](https://en.wikipedia.org/wiki/IBM_AS/400#Silverlake). They released the [System/38](https://en.wikipedia.org/wiki/IBM_System/38) which actually had some of the original ambitious ideas: programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). This means, the high-level architecture is never directly executed. 
+The seed of these ideas set a firm base for the future of IBM and they kept the grind going with their [***Project Silverlake***](https://en.wikipedia.org/wiki/IBM_AS/400#Silverlake). 
 
-This system marked a revolutionary step in architecture by introducing a high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI) and the implementation of the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) where all addressable objects and segments are in directly accessible memory with no concept of secondary storage, the movement of segments between primary and secondary storage to create this virtual memory environment is performed by the system microcode.
+## The System/38
 
-> The system keeps track of the virtual memory segments by doing a hashing XOR on the segment unique id bits to create and index and store it in a hashing table. (Other systems do the same). There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***.
+The [System/38](https://en.wikipedia.org/wiki/IBM_System/38) was released. It actually had some of the original ambitious ideas: programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). This means, the high-level architecture is never directly executed, or put in other words: **the hardware and the software can be improved independently**.
 
-> The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the [System Support Program](https://en.wikipedia.org/wiki/System_Support_Program) operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers.
+> The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the [System Support Program](https://en.wikipedia.org/wiki/System_Support_Program) operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers, small mainframes.
 
 The consequences of these *abstraction* ideas were huge: separation of high-level programming from specific instruction sets, translation of high-level instructions to low-level at compile time for no *interpretation* downtime, single-level-storage where programs, files and databases were treated as objects in the same virtual address space, and finally, a built-in relational database (DB2 Intro coming soon). No time for losers here.
 
->The idea of modularization and separations at different levels of abstraction is a pattern found on many areas of computer science. For example: the network stack ([OSI Model](https://en.wikipedia.org/wiki/OSI_model), [TCP/IP](https://en.wikipedia.org/wiki/Internet_protocol_suite) ) and the internet ([REST arch](https://en.wikipedia.org/wiki/REST)).
+>The idea of modularization and separations at different levels of abstraction is a pattern found on many areas of computer science. Some examples: the network stack ([OSI Model](https://en.wikipedia.org/wiki/OSI_model), [TCP/IP](https://en.wikipedia.org/wiki/Internet_protocol_suite) ) and the internet ([REST arch](https://en.wikipedia.org/wiki/REST)).
 
 # The legendary AS/400
 
-Built on the System/38’s architecture and after refining and extending its concepts, came the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, and backward compatibility.
+Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architecture and after refining and extending its concepts, came the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, and backward compatibility.
+
+## Inside the 400
+
+This system marked a revolutionary step in IBM architecture by introducing a high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI) and the implementation of the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) where all addressable objects and segments are in directly accessible memory with no concept of secondary storage, the movement of segments between primary and secondary storage to create this virtual memory environment is performed by the system microcode. Cool stuff.
+
+> The system keeps track of the virtual memory segments by doing a hashing XOR on the segment unique id bits to create an index and store it in a hashing table. (Other systems do the same). There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. Since the addresses of virtual memory can be very large, there is no problem of overlapping.
 
 > The operating system was the Integrated Operating System (OS/400)
 
