@@ -70,8 +70,7 @@ Programs were compiled into a high-level instruction set, which was not *interpr
 
 > The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the [System Support Program](https://en.wikipedia.org/wiki/System_Support_Program) operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers, small mainframes.
 
-The system implemented the [Single-level storage (SLS)](https://en.wikipedia.org/wiki/Single-level_store) (still using physical memory here, no virtual memory yet)
-where all addressable objects and segments are in directly accessible memory with no concept of secondary storage. (**Storage abstraction, kinda**). This Single-level abstraction gave raise to the conpcet of ***Object***.
+The system implemented the [Single-level storage (SLS)](https://en.wikipedia.org/wiki/Single-level_store) where all addressable objects and segments are directly accessible in virtual memory with no concept of secondary storage. (**Storage abstraction**). This Single-level abstraction gave raise to the conpcet of ***Object***.
 
 ## Explaining Objects
 
@@ -109,7 +108,7 @@ This system marked a revolutionary step in IBM architecture by re-introducing th
 
 > This machine interfaced allowed IBM to move the AS/400 from the 48­bit CISC (IMPI) original implementation to the 64­bit RISC (PowerPC) processor architecture without needing to change the hadrware independent layer.
 
-The **Single-level storage (SLS)** was changed for the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS))? which gives a single virtual abastraction of all the system resources to the operating system.
+The **Single-level storage (SLS)** of the **System/38** was also implemented to give a single virtual abastraction of all the system resources to **AS/400**.
 
 > The system keeps track of the virtual memory segments by doing a hashing XOR on the segment unique id bits to create an index and store it in a hashing table. (Other systems do the same). There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. Since the addresses of virtual memory can be very large, there is no problem of overlapping.
 
@@ -137,10 +136,6 @@ The **XPF** layer supports the [IBM I Operating system](), which is actually the
 
 ![alt text](./images/the_green_screen.png)
 
-
-> Modern system even have [Multiple Virtual Storage (MVS)](https://en.wikipedia.org/wiki/MVS)
-
-> Single Virtual Storage (SVS) means that auxiliary storage capacity can be added as needed without changing current application programs.
 
 
 Contextualized to the IBM I, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
@@ -193,7 +188,7 @@ The system allocates resources to the job, and the program is basically **loaded
 
 > During a process execution, the instructions and data will be loaded from memory into the registers to be executed by the processor. Modern operating systems fetch a large number of instructions, generate a dependency graph and try to execute them in a parallel in an out-of-order manner. Every time you run a program, it never runs the same way twice, even though it gives the same result. That's kind of amazing.
 
-When the IBM I allocates resources for a program on a job is called an **activation** (this is the same idea of a process). A job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource/objects the programs to be **invoked** may need. The job sees them all as part of the same virtual memory (thanks to Single virtual Sotorage (SVS)). To liberate these resources, it is only necessary to delete the activation group, which, effectively, is a **deactivation**.
+When the IBM I allocates resources for a program on a job is called an **activation** (this is the same idea of a process). A job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource/objects the programs to be **invoked** may need. The job sees them all as part of the same virtual memory (thanks to Single-level storage (SLS)). To liberate these resources, it is only necessary to delete the activation group, which, effectively, is a **deactivation**.
 
 We know that the IBM I allocates resources for a program in a job, but how does it allocates the resources for the job itself? That's where the **subsystems** come into play.
 
