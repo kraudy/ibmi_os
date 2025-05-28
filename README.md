@@ -50,7 +50,7 @@ The same goes for storage, it was not possible to increase it dynamically withou
 
 There was a need for a better way to manage resources independently, improve them and scale. For a machine, there are basically 2 important parts: **Computation** and **Storage**. IBM knew this very well and decided that to really improve the technology, they needed to separate these two and **abstract** them to the high-level implementations with an intermediary layer.
 
-To **abstract Storage**, a single virtual representation of all the system storage was needed. The idea of [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). 
+To **abstract Storage**, a single representation of all the system storage was needed. The idea of [Single-level storage (SLS)](https://en.wikipedia.org/wiki/Single-level_store) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). 
 
 To **abstract Computation**, a machine that *natively* executed high-level procedural languages ([FORTRAN](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/COBOL), [PL/i](https://en.wikipedia.org/wiki/PL/I), [APL](https://en.wikipedia.org/wiki/APL_(programming_language)), [RPG](https://en.wikipedia.org/wiki/IBM_RPG)) was needed, but without interpretation downtime (like the [Java virtual machine (JVM)](https://en.wikipedia.org/wiki/Java_virtual_machine)).
 
@@ -64,31 +64,58 @@ The seed of these ideas set a firm base for the future of IBM and paved the way 
 
 ## The System/38
 
-The [System/38](https://en.wikipedia.org/wiki/IBM_System/38) was released. It actually had some of the original ambitious ideas of ***Project Fort Knox***: programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). This means, the high-level architecture is never directly executed, or put in other words: **the hardware and the software can be improved independently**.
+The [System/38](https://en.wikipedia.org/wiki/IBM_System/38) was released. It actually had some of the original ambitious ideas of ***Project Fort Knox***.
+
+Programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). This was done through a **Machine Interface (MI)**, the high-level architecture is never directly executed, or put in other words: **the hardware and the software can be improved independently**. (**Computation abstraction**)
 
 > The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the [System Support Program](https://en.wikipedia.org/wiki/System_Support_Program) operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers, small mainframes.
 
-The consequences of these *abstraction* ideas were huge: separation of high-level programming from specific instruction sets, *translation* of high-level instructions to low-level for no *interpretation* downtime, single-level-storage where programs, files and any everything else were treated as objects in the same virtual address space, and finally, a built-in database (not relational yet) (DB2 Intro coming soon). Sounds like a W.
+The system implemented the [Single-level storage (SLS)](https://en.wikipedia.org/wiki/Single-level_store) (still using physical memory here, no virtual memory yet)
+where all addressable objects and segments are in directly accessible memory with no concept of secondary storage. (**Storage abstraction, kinda**). This Single-level abstraction gave raise to the conpcet of ***Object***.
+
+## Explaining Objects
+
+An **object** is an instance of an abstract data type and the system high-level  instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition and is leveraging on the ideas of **Computation abstraction** and **Storage abstraction**. 
+
+> The non technical definition: An object is *something* to *operate on*.
+
+> This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
+
+These high-level instructions are encpauslated in the [CL (Control language)]() commands which is designed to mainupalate these **objects**
+
+When a **CL** command that modifies an object is executed, it actually performs a series of memory-to-memory high-level microcode instructions that modify the object attributes or composition directly, instead of doing register-to-memory operations like low-level instructions set.
+
+**Objects** can be: programs, jobs, tables, cursors, data queues, memory spaces, etc. The memory space is the only object that can be manipulated at the byte level by instructions like the legendary ***MOVE*** operation.
+
+> As you may see, IBM took the idea of abstract data type like int, float, char, etc, to a whole new level.
+
+> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log in on the system.
+
+To address (locate) these **objects**, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
+
+Pointers address objects but they use a ***context object*** to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** which is basically a list of pointers to various ***context objects*** 
+
+The consequences of these *abstraction* ideas were huge: separation of high-level programming from specific instruction sets, *translation* of high-level instructions to low-level for no *interpretation* downtime, single-level-storage where programs, files and everything else were treated as objects in the same address space, and finally, a built-in database (not relational yet) (DB2 Intro coming soon). Sounds like a W.
 
 >The idea of modularization and separations at different levels of abstraction is a pattern found on many areas of computer science. Some examples: the network stack ([OSI Model](https://en.wikipedia.org/wiki/OSI_model), [TCP/IP](https://en.wikipedia.org/wiki/Internet_protocol_suite) ) and the internet ([REST arch](https://en.wikipedia.org/wiki/REST)).
 
-# The legendary AS/400
+## The legendary AS/400
 
-After ***Project Fort Knox*** being terminated [***Project Silverlake***](https://en.wikipedia.org/wiki/IBM_AS/400#Silverlake) begun. Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architecture and after refining and extending its concepts, ***Project Silverlake*** gave life to the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, and backward compatibility.
+After ***Project Fort Knox*** being terminated [***Project Silverlake***](https://en.wikipedia.org/wiki/IBM_AS/400#Silverlake) begun. 
 
-## Inside the 400
+Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architecture and after refining and extending its concepts, ***Project Silverlake*** gave life to the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, and backward compatibility.
 
-This system marked a revolutionary step in IBM architecture by introducing a high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI). This is like a virtual machine to the system and the base for the concept of ***Object*** (more on objets later). The **TIMI** allowed **HLL** to be compiled to its virtual instruction set to be later **translated** into machine code.
-
-> This viritual instruction set performs operations memory-memory insted of register-memory like low level instructions.
-
-This virual interface is supported by the ***System Licensed Internal Code (SLIC)***, written in [C++](https://en.wikipedia.org/wiki/C%2B%2B) and assembler. The **SLIC** can be compared to a [Kernel](https://en.wikipedia.org/wiki/Kernel_(operating_system))
+This system marked a revolutionary step in IBM architecture by re-introducing the high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI). This is like a virtual machine and the reason behind the [Integrated Language Environment (ILE)](https://en.wikipedia.org/wiki/Integrated_Language_Environment) (More about ILE on my RPG repo coming soon)
 
 > This machine interfaced allowed IBM to move the AS/400 from the 48­bit CISC (IMPI) original implementation to the 64­bit RISC (PowerPC) processor architecture without needing to change the hadrware independent layer.
 
-It also implemented the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) where all addressable objects and segments are in directly accessible memory with no concept of secondary storage, the movement of segments between primary and secondary storage to create this virtual memory environment is performed by the system microcode. Cool stuff.
+The **Single-level storage (SLS)** was changed for the [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS))? which gives a single virtual abastraction of all the system resources to the operating system.
 
 > The system keeps track of the virtual memory segments by doing a hashing XOR on the segment unique id bits to create an index and store it in a hashing table. (Other systems do the same). There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. Since the addresses of virtual memory can be very large, there is no problem of overlapping.
+
+Again, leveraging on these two concpets of **Computation and Resource** abstractions is the concept of ***Object*** as it was in the **system/38**
+
+The **TIMI** virual interface is supported by the ***System Licensed Internal Code (SLIC)***, written in [C++](https://en.wikipedia.org/wiki/C%2B%2B) and assembler. The **SLIC** can be compared to a [Kernel](https://en.wikipedia.org/wiki/Kernel_(operating_system))
 
 The **SLIC** supports the **TIMI** wich inturn is the base of the **XPF** which is the code that implements the hardware independent components of the operating system that are compiled into **TIMI** instructions. Is is implemented in PL/MI
 
@@ -110,31 +137,11 @@ The **XPF** layer supports the [IBM I Operating system](), which is actually the
 
 ![alt text](./images/the_green_screen.png)
 
-## Explaining Objects
-
-Remember the idea of a [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS))? Well, since the hardware natively gives a single virtual abastraction of all the system resources to the operating system, the obvious move would be to take advantage of this so that everything in the IBM I leverages this power of abstraction. That is when the concept of ***Object*** is born. 
 
 > Modern system even have [Multiple Virtual Storage (MVS)](https://en.wikipedia.org/wiki/MVS)
 
 > Single Virtual Storage (SVS) means that auxiliary storage capacity can be added as needed without changing current application programs.
 
-An **object** is an instance of an abstract data type and the system instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition. 
-
-> The non definition definition: An object is *something* to *operate on*.
-
-> This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
-
-Here is an interesting point to note: When a command that modifies an object is executed, it actually performs a series of high-level microcode instructions that modify the object attributes or composition. This means, that the high-level instruction set is intended to perform operations directly on these abstractions called **objects** instead of directly doing register/memory operations like the low-level instruction set that actually execute operations.
-
-What gives? Well, objects can be: programs, jobs, tables, cursors, data queues, memory spaces, etc. The memory space is the only object that can be manipulated at the byte level by instructions like the legendary ***MOVE*** operation.
-
-> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log in on the system.
-
-To address (locate) these objects, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
-
-> As you may see, IBM took the idea of abstract data type like int, float, char, etc, to a whole new level.
-
-Pointers address objects but they use a ***context object*** to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** which is basically a list of pointers to various ***context objects*** 
 
 Contextualized to the IBM I, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
 
