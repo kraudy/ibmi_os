@@ -42,11 +42,17 @@ Programs were written in low-level languages, which made them tightly coupled to
 
 Due to the increase in complexity and requirements, the limitations of low-level programming became evident. That's when higher-level languages like [Fortran](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/IBM_COBOL) and [RPG](https://en.wikipedia.org/wiki/IBM_RPG) came into play. The [compiler](https://en.wikipedia.org/wiki/Compiler) translated these high-level languages to machine-specific instructions. 
 
-Now we had an intermediary layer: the *compiler*. But here is the important part: *the compiled code still executed directly on the processor’s native instruction set*. If you change the CPU architecture or instruction set, all compiled programs just break. Companies would not be too happy about that, especially big companies running 24/7 operations.
+Now we had an intermediary layer: the [*compiler*](https://en.wikipedia.org/wiki/Compiler). But here is the important part: **the compiled code still executed directly on the processor’s native instruction set**. If you change the CPU architecture or instruction set, all compiled programs just break. 
 
-There was a need for a better way to manage resources and scale; that's when the idea of [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). This movement towards a unified IBM product line was called [***Project Fort Knox***](https://en.wikipedia.org/wiki/IBM_AS/400#Fort_Knox)
+The same goes for storage, it was not possible to increase it dynamically without changes to the machine and the software running on it.
 
-The main principle was to have a machine that *natively* executed high-level procedural languages ([FORTRAN](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/COBOL), [PL/i](https://en.wikipedia.org/wiki/PL/I), [APL](https://en.wikipedia.org/wiki/APL_(programming_language)), [RPG](https://en.wikipedia.org/wiki/IBM_RPG)) without interpretation (like the [Java virtual machine (JVM)](https://en.wikipedia.org/wiki/Java_virtual_machine)). Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas at the time, which led to the ***Project Fort Knox*** being terminated. 
+> Big companies running 24/7 operations would not be too happy about changing all their software to update the hardware.
+
+There was a need for a better way to manage resources independently, improve them and scale. For a machine, there are basically 2 important parts: **Computation** and **Storage**. IBM knew this very well and decided that to really improve the technology, they needed to separate these two and **abstract** them to the high-level implementations with an intermediary layer.
+
+That's when the idea of [Single Virtual Storage (SVS)](https://en.wikipedia.org/wiki/OS/VS2_(SVS)#cite_note-GC20-1753-1) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). This movement towards a unified IBM product line was called [***Project Fort Knox***](https://en.wikipedia.org/wiki/IBM_AS/400#Fort_Knox)
+
+The main principle of this project was to have a machine that *natively* executed high-level procedural languages ([FORTRAN](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/COBOL), [PL/i](https://en.wikipedia.org/wiki/PL/I), [APL](https://en.wikipedia.org/wiki/APL_(programming_language)), [RPG](https://en.wikipedia.org/wiki/IBM_RPG)) without interpretation (like the [Java virtual machine (JVM)](https://en.wikipedia.org/wiki/Java_virtual_machine)). Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas at the time, which led to the ***Project Fort Knox*** being terminated. 
 
 The seed of these ideas set a firm base for the future of IBM.
 
