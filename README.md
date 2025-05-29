@@ -198,7 +198,7 @@ We know that the IBM I allocates resources for a program in a job, but how does 
 
 A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** and **invoke** programs, it is used to spawn jobs. 
 
-## Hands-on
+# Hands-on
 
 Enough explanations, ideas by themselves are nothing unless you are some Hellenistic Greek philosopher. We need to apply them to generate knowledge, that's the beauty of engineering: it works, or it does not work. Let's prepare for some hands-on. 
 
@@ -248,7 +248,9 @@ Go to your library with ***wrklibpdm yourlib1***, select option ***12***
 
 ![alt text](./images/lib_opt_12.png)
 
-Your library is probably empty. We will create a compiled object, a program, to demostrate some of the explained concepts. A *source PF* is needed for the source code of the program, lets create it. You can do ***F6*** + ***OPT 153*** from *PDM* or execute the command directly ***CRTSRCPF*** + ***F4***
+Your library is probably empty. We will create a compiled object, a program, to demostrate some of the explained concepts. 
+
+A *source PF* is needed for the source code of the program, lets create it. You can do ***F6*** + ***OPT 153*** from *PDM* or execute the command directly ***CRTSRCPF*** + ***F4***
 
 ![alt text](./images/crtsrcpf.png)
 
@@ -299,17 +301,17 @@ return;
 
 Just save it and now we'll compile it the old fashion way.
 
-Do ***OPT 14 (compile) + F4*** on the *HELLO* source member. 
+Do ***OPT 14 (compile) + F4*** on the **HELLO** source member. 
 
 ![alt text](./images/compile_hello.png)
 
-> This option executed the following CL (Control lanaguage, remember?) command directly ***CRTBNDRPG PGM(YOURLIB/HELLO) SRCFILE(YOURLIB/QRPGLESRC) SRCMBR(HELLO) DFTACTGRP(*NO) REPLACE(*YES)***
+> This option executed the following CL (Control lanaguage) command directly **CRTBNDRPG PGM(YOURLIB/HELLO) SRCFILE(YOURLIB/QRPGLESRC) SRCMBR(HELLO) DFTACTGRP(*NO) REPLACE(*YES)**
 
 You should see the compiled object in your library
 
 ![alt text](./images/compiled_hello.png)
 
-Do ***OPT 16 (run)*** on the *HELLO* pgm. The output should be like this.
+Do ***OPT 16 (run)*** on the **HELLO** pgm. The output should be like this.
 
 ![alt text](./images/hello_output.png)
 
@@ -341,6 +343,6 @@ It is also possible to create the member, edit the source code and compile it di
 
 That's it. It was a long run, hope you find it useful.
 
-If you have any suggestions open an issue and i'll check it out
+If you have any suggestions open an issue and i'll check it out.
 
 Thanks for reading.
