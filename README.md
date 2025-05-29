@@ -198,13 +198,15 @@ We know that the IBM I allocates resources for a program in a job, but how does 
 
 A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** and **invoke** programs, it is used to spawn jobs. 
 
-## Getting the tools
+## Hands-on
 
 Enough explanations, ideas by themselves are nothing unless you are some Hellenistic Greek philosopher. We need to apply them to generate knowledge, that's the beauty of engineering: it works, or it does not work. Let's prepare for some hands-on. 
 
+## Getting the tools
+
 To use the IBM I, access to a Power server is necessary. We'll be using [PUB400](https://pub400.com/) which is a Power server on the internet. Head to the [sing up](https://pub400.com/cgi/signup.nd/start) page and create your user.
 
-After that you need a way to *connect*, we'll be using the [ACS (Access Client Solutions)](https://www.ibm.com/support/pages/ibm-i-access-client-solutions) which is free. It emulates a [5250 terminal](https://en.wikipedia.org/wiki/IBM_5250) (the green scren) over telnet.
+After that you need a way to **connect** to it, we'll be using the [ACS (Access Client Solutions)](https://www.ibm.com/support/pages/ibm-i-access-client-solutions) which is free. It emulates a [5250 terminal](https://en.wikipedia.org/wiki/IBM_5250) (the green scren) over telnet.
 
 We also need a modern way to edit code. [VsCode](https://code.visualstudio.com/) with the [IBM I Development Pack](https://marketplace.visualstudio.com/items?itemName=HalcyonTechLtd.ibm-i-development-pack) through [Code4i](https://marketplace.visualstudio.com/items?itemName=HalcyonTechLtd.code-for-ibmi) is the way.
 
@@ -214,11 +216,13 @@ At this point, you should have the background necessary to tackle the IBM i.
  
 ## Facing the IBM I
 
-Once inside, we see the iconic green screen. What is this? Well, it is a terminal, like the [Windows CMD](https://en.wikipedia.org/wiki/Cmd.exe) or the Linux [bash shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). What is the purpose? To send commands to the operating system like any other shell. The IBM I shell is called **QCMD**, you can actually do a ***CALL QCMD*** to directly invoke the terminal.
+Once inside, we see the iconic green screen. What is this? Well, it is a terminal, like the [Windows CMD](https://en.wikipedia.org/wiki/Cmd.exe) or the Linux [bash shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). 
+
+What is the purpose? To send commands to the operating system like any other shell. The IBM I shell is called **QCMD**, you can actually do a ***CALL QCMD*** to directly invoke the terminal.
 
 > A **CALL** returns a system pointer that allows the program to be called.
 
-These commands are called the **Control Language (CL)**. It provides a consistent interface to all system functions (user-written commands can also be created). This language provides rich function and a consistent set of terminology and syntax. Most commands can be executed interactively (***F4***, you'll see it later) or from a high-level language program (***SYSTEM*** API). 
+These commands are called the **Control Language (CL)**(remember?). It provides a consistent interface to all system functions (user-written commands can also be created). This language provides rich function and a consistent set of terminology and syntax. Most commands can be executed interactively (***F4***, you'll see it later) or from a high-level language program (***SYSTEM*** API). 
 
 > You can even create CL programs, which allow the use of variables, error handling and access to the database. Programming functions include reading and writing to a database file, IF/THEN/ELSE logic, calling or being called from another program, etc.
 
@@ -234,7 +238,7 @@ There you can select an option to work with libraries, objects or members. But y
 
 > As i told you, almost all IBM I commands can be prompted with **F4**, this will show you the minimum parameters required to execute them. Some commands have extra parameters that can be viewed with **F10** and to change the presentation of the parameters press **F11**
 
-These *pdm* commands are the basics for navigating the IBM I when you are starting.
+These **PDM** commands are the basics for navigating the IBM I when you are starting.
 
 Inside PUB400 you should have two libaries with the name of your user plus a 1 and a 2 like this
 
