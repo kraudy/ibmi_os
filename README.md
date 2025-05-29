@@ -80,7 +80,7 @@ An **object** is an instance of an abstract data type and the system high-level 
 
 > This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
 
-These high-level instructions are encpauslated in the [CL (Control language)]() commands which is designed to mainupalate these **objects**
+These high-level instructions are encpauslated in the [CL (Control language)](https://en.wikipedia.org/wiki/Control_Language) commands which is designed to mainupalate these **objects**
 
 When a **CL** command that modifies an object is executed, it actually performs a series of memory-to-memory high-level microcode instructions that modify the object attributes or composition directly, instead of doing register-to-memory operations like low-level instructions set.
 
@@ -92,7 +92,7 @@ When a **CL** command that modifies an object is executed, it actually performs 
 
 To address (locate) these **objects**, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
 
-Pointers address objects but they use a ***context object*** to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** which is basically a list of pointers to various ***context objects*** 
+Pointers address objects but they use a ***context object*** (**Library** on the IBM I) to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** (**Library list** on the IBM I) which is basically a list of pointers to various ***context objects*** 
 
 The consequences of these *abstraction* ideas were huge: separation of high-level programming from specific instruction sets, *translation* of high-level instructions to low-level for no *interpretation* downtime, single-level-storage where programs, files and everything else were treated as objects in the same address space, and finally, a built-in database (not relational yet) (DB2 Intro coming soon). Sounds like a W.
 
@@ -108,11 +108,11 @@ This system marked a revolutionary step in IBM architecture by re-introducing th
 
 > This machine interfaced allowed IBM to move the AS/400 from the 48­bit CISC (IMPI) original implementation to the 64­bit RISC (PowerPC) processor architecture without needing to change the hadrware independent layer.
 
-The **Single-level storage (SLS)** of the **System/38** was also implemented to give a single virtual abastraction of all the system resources to **AS/400**.
+The **Single-level storage (SLS)** of the **System/38** was also implemented to give a single virtual abastraction of all the system resources to the **AS/400**.
 
 > The system keeps track of the virtual memory segments by doing a hashing XOR on the segment unique id bits to create an index and store it in a hashing table. (Other systems do the same). There is another table that maps these virtual addresses to primary memory. If the maping of a virtual page is not found in the primary memory, then it is loaded from secondary storage: That's called ***Pagination***. Since the addresses of virtual memory can be very large, there is no problem of overlapping.
 
-Again, leveraging on these two concpets of **Computation and Resource** abstractions is the concept of ***Object*** as it was in the **system/38**
+Again, leveraging on these two concpets of **Computation and Resource** abstractions, is the concept of ***Object*** as it was in the **system/38**
 
 The **TIMI** virual interface is supported by the ***System Licensed Internal Code (SLIC)***, written in [C++](https://en.wikipedia.org/wiki/C%2B%2B) and assembler. The **SLIC** can be compared to a [Kernel](https://en.wikipedia.org/wiki/Kernel_(operating_system))
 
@@ -122,41 +122,47 @@ The operating system of this machine was the Integrated Operating System (OS/400
 
 > IBM likes to change names a lot.
 
-# The IBM I
+# Finally, The IBM I
 
 With the release of IBM POWER 6 systems, IBM finally finished the merge of the System I and [System p](https://en.wikipedia.org/wiki/IBM_System_p) hardware. Today it is possible to run [IBM i](https://en.wikipedia.org/wiki/IBM_i), [AIX](https://en.wikipedia.org/wiki/IBM_AIX) and [Linux](https://en.wikipedia.org/wiki/Linux) on the IBM POWER systems. 
 
 > This layout: **IBM I/AIX** is what you usually see in most companies nowadays and is mostly taken for granted.
 
-> POWER: Performance Optimized With Enhanced RISC
+> POWER stands for: Performance Optimized With Enhanced RISC
 
 The man behind this merge was [Frank Soltis](https://en.wikipedia.org/wiki/Frank_Soltis)
 
-The **XPF** layer supports the [IBM I Operating system](), which is actually the topic of this repo. Here starts the IBM I guideline.
+The [XPF](https://en.wikipedia.org/wiki/IBM_i#XPF) layer supports the [IBM I Operating system](https://en.wikipedia.org/wiki/IBM_i), which is actually the topic of this repo. Here starts the IBM I guideline.
 
 ![alt text](./images/the_green_screen.png)
 
 
-
-Contextualized to the IBM I, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
+Some recap, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
 
 > The library list control how the system accesses objects
 
 > Extra: Since everything is an object on the IBM I, you can have security at the object level. Which means that the pointer addressing the object is first checked to be autorized or rejected to perform the operations. That is really nice.
 
-## IBM I Object system, not File system
+## Object system, not File system
 
-As you may see, the whole idea of the object architecture is the use of data and description of that data (meta-data) that defines how it can be interacted with and manipulated. In this way, the IBM I has no need of a traditional file system
+The purpose of a file system is to abstract files, since the system already abstracts everything (including files) as objects, why should it need a file system? Well, IBM thougth the same. 
 
-To really understand the IBM I object hierarchies (e.g: The file system, not quite though) we mostly need to know about **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
+In this way, the IBM I has no need of a traditional file system. It uses an object system.
 
-A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A ***Source PF*** is a kind of table used to store the source or *description* of other objects to be compiled o created. 
+**Objests** are data and description of that data (meta-data) that defines how it can be interacted with and manipulated. 
 
-A ***Source PF*** is a *multi-member* table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A *multi-member* ***Source PF*** table can have more than one register definition (it can be the same definition multiple times). Each member or definition stores the source code/definition of a program, table or any other object. 
+To really understand 
+The IBM I object system has two interesting objects that you need to know about: **Libraries** and **Source PF(Physical File)** which are not the same as a **PF(Physical File)**. Stay with me. I'll explain.
 
-> This  *multi-member* idea is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+A Physical File is the IBM I native version of an SQL table, intended for storing data to be processed. A ***Source PF*** is a kind of table used to store the source or **description** of other objects to be compiled o created. 
 
-A **library** is used to group or contextualized and locate objects independently of where they are stored (a library is similar to a folder, not quiet though). It can sttore compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other objects.
+> Remember that the IBM I has an integrated relational database implementend at the machine level (**SLIC**). ***Source PF***, **PF(Physical File)** and **SQL Tables** are managed by this engine called **DB2**
+
+A ***Source PF*** is a **multi-member** table. What does this mean? For a SQL table you usually define the columns with their data type, this defines a register and thus the whole table. A **multi-member** ***Source PF*** table can have more than one register definition (it is the same definition multiple times). Each member or definition stores the source-code/definition of a program, table and other object. 
+
+> This  **multi-member** idea is a weird concept that does not exist in any other operating system, so don't get too hung up on it if you can't grasp it right now.
+
+A **library** is used to group, contextualized and locate objects independently of where they are stored (a library is similar to a folder, not quiet though). It can sttore compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other objects.
 
 ## Program execution (and Resource allocation?)
 
