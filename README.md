@@ -164,23 +164,19 @@ A ***Source PF*** is a **multi-member** table. What does this mean? For a SQL ta
 
 A **library** is used to group, contextualized and locate objects independently of where they are stored (a library is similar to a folder, not quiet though). It can sttore compiled programs (**PGM**, **MODULE**, **SRVPGM**, etc), tables (**FILE: PF-DTA**, **FILE: PF-SRC**, **FILE: DSPF**, etc) and other objects.
 
-## Program execution (and Resource allocation?)
+## Program execution
 
-A program is basically a stream of instructions, an object definition and some user data which can also be seen as a compiled unit of execution.
+A program object is basically a stream of instructions with some definition and user data. Can be seen as a compiled unit of execution.
 
 There are two points to a program execution: **Activation** and **Invocation**
 
-**Activation** Causes static storage for the program to be allocated and initialized: Gloabal variables and files are made addressable (This is usually the *data* or *static* segment of memory. Check [Address space](https://en.wikipedia.org/wiki/Address_space)).
+**Activation** Causes static storage for the program to be allocated and initialized: Gloabal variables and files are made addressable (This is usually the **data** or **static** segment of memory. Check [Address space](https://en.wikipedia.org/wiki/Address_space)).
 
-> A process data structured contains an activation entry for each activated program in the job.
+**Invocation** Occurs when there is a transfer of control to the program. At invocation time, dynamic storage is allocated (Usually in the **heap** memory segment. Check [Address space](https://en.wikipedia.org/wiki/Address_space)) 
 
-**Invocation** Occurs when there is a transfer of control to the program. At invocation time, dynamic storage is allocated (Usually in the *heap* memory segment. Check [Address space](https://en.wikipedia.org/wiki/Address_space)) 
+A process data structure contains an activation entry for each activated program in the job. Each invocation entry contains status information, a pointer to the previous invocation entry, a pointer to the program instructions and the automatic storage. After the invocation entry is allocated and initialized, control is transfer to the program at its ***entry point*** (also called ***PEP**)
 
-> Dynamic process data is initialized in a process data structure.
-
-Each invocation entry contains status information, a pointer to the previous invocation entry, a pointer to the program instructions and the automatic storage. After the invocation entry is allocated and initialized, control is transfer to the program at its ***entry point*** (also called ***PEP**)
-
-***Activation*** can be done explicity or implicit. If a **CALL** is made to a program that has not been activated, the hardware automatically does the activation and then the invocation.
+> **Activation** can be done explicity or implicit. If a **CALL** is made to a program that has not been activated, the hardware automatically does the activation and then the invocation.
 
 ## Resource allocation
 
@@ -190,15 +186,17 @@ To execute a program, the OS needs to allocate the resources needed for it, but 
 
 The system allocates resources to the job, and the program is basically **loaded** (**activated**) into the job resources. Now the program can be executed (**invocated**) through the job resources. Really cool stuff.
 
-**A job can be viewed as an abstraction of allocated resources**. By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a *process*. 
+**A job can be viewed as a unit of abstracted system resources**(computation and storage). By itself it can't do much since there is nothing to do. The same applies to a program in an inverse manner; by itself is no more than a series of instructions and data stored in disk without being used. But when the program data (instructions and data) are loaded into the corresponding job memory segment and the jobs resources are allocated for executing the program, then job/program execution interaction creates what is called a **process**. 
 
-> During a process execution, the instructions and data will be loaded from memory into the registers to be executed by the processor. Modern operating systems fetch a large number of instructions, generate a dependency graph and try to execute them in a parallel in an out-of-order manner. Every time you run a program, it never runs the same way twice, even though it gives the same result. That's kind of amazing.
+> During a process execution, the instructions and data will be loaded from memory into the registers to be executed by the processor. Modern operating systems fetch a large number of instructions, generate a dependency graph and try to execute them in a parallel and out-of-order manner. Every time you run a program, it never runs the same way twice, even though it gives the same result. That's kind of amazing.
 
-When the IBM I allocates resources for a program on a job is called an **activation** (this is the same idea of a process). A job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource/objects the programs to be **invoked** may need. The job sees them all as part of the same virtual memory (thanks to Single-level storage (SLS)). To liberate these resources, it is only necessary to delete the activation group, which, effectively, is a **deactivation**.
+On the IBM I, a job can have many activations, which are managed in groups called **activation groups**, pretty straightforward. This means a job can have many activation groups. The resources on these groups include programs, tables, devices, and any other resource/objects the programs to be **invoked** may need. The job sees them all as part of the same virtual memory (thanks to **Single-level storage (SLS)** from way back). 
+
+To liberate the job resources, the system only needs to to delete the activation group, which, effectively, is a **deactivation**.
 
 We know that the IBM I allocates resources for a program in a job, but how does it allocates the resources for the job itself? That's where the **subsystems** come into play.
 
-A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** programs, it is used to spawn jobs, which in turn will activate programs to be **invoked**. 
+A subsystem is similar to a job in the sense that it is an abstraction of the system resources (hence the name sub-system, like a part of the full system), but instead of its resources being used to **activate** and **invoke** programs, it is used to spawn jobs. 
 
 ## Getting the tools
 
