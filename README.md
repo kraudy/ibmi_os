@@ -8,18 +8,18 @@ This is intended to give a guideline on the eternal IBM i operating system.
 
 - [Abstractions](#abstractions)
   - [Starting from the bottom](#starting-from-the-bottom)
-  - [Toward Higher-Level Abstraction](#toward-higher-levels)
+  - [Toward Higher-Levels](#toward-higher-levels)
   - [The System/38](#the-system38)
-- [The legendary AS/400](#the-legendary-as400)
-  - [Inside the 400](#inside-the-400)
-- [The IBM I](#the-ibm-i)
   - [Explaining Objects](#explaining-objects)
-  - [IBM I Object system, not File system](#ibm-i-object-system-not-file-system)
-  - [Program execution (and Resource allocation?)](#program-execution-and-resource-allocation)
+  - [The legendary AS/400](#the-legendary-as400)
+- [Finally, The IBM I](#finally-the-ibm-i)
+  - [IObject system, not File system](#object-system-not-file-system)
+  - [Program execution](#program-execution)
   - [Resource allocation](#resource-allocation)
-- [Getting the tools](#getting-the-tools)
-- [Facing the IBM I](#facing-the-ibm-i)
-- [IBM Highlights](#ibm-highlights)
+- [Hands-on](#hands-on)
+  - [Getting the tools](#getting-the-tools)
+  - [Facing the IBM I](#facing-the-ibm-i)
+  - [IBM Highlights](#ibm-highlights)
 - [The end](#the-end)
 
 # Abstractions
@@ -339,7 +339,7 @@ It is also possible to create the member, edit the source code and compile it di
 
 ***Openness*** is my favorite one. This has been a core IBM value for a long time, what happens is that people usually don't know about it.
 
-## The end
+# The end
 
 That's it. It was a long run, hope you find it useful.
 
