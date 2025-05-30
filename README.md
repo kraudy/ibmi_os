@@ -108,7 +108,7 @@ After ***Project Fort Knox*** being terminated [***Project Silverlake***](https:
 
 Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architecture and after refining and extending its concepts, ***Project Silverlake*** gave life to the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, integration, and backward compatibility.
 
-This system marked a revolutionary step in IBM architecture by re-introducing the high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI). This is like a virtual machine and the reason behind the [Integrated Language Environment (ILE)](https://en.wikipedia.org/wiki/Integrated_Language_Environment) (More about ILE on my RPG repo coming soon)
+This system marked a revolutionary step in IBM architecture by re-introducing the high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI). This is like a virtual machine and the reason behind the [Integrated Language Environment (ILE)](https://en.wikipedia.org/wiki/Integrated_Language_Environment) (More about ILE on my [RPG language repo](https://github.com/kraudy/rpg_language))
 
 > This machine interfaced allowed IBM to move the AS/400 from the 48­bit CISC (IMPI) original implementation to the 64­bit RISC (PowerPC) processor architecture without needing to change the hadrware independent layer.
 
@@ -287,7 +287,7 @@ Go to your library in the Code4i Object Browser and open the hello source in the
 
 Add this rpgle code to the member
 
-I have another repo (RPG Intro here) if you want to really understand this code.
+I have another repo ([RPG Language Intro](https://github.com/kraudy/rpg_language)) if you want to really understand this code.
 
 ```rpg
 **free
@@ -314,7 +314,7 @@ Do ***OPT 16 (run)*** on the **HELLO** pgm. The output should be like this.
 
 ![alt text](./images/hello_output.png)
 
-It is also possible to create the member, edit the source code and compile it directly from the Code4i VsCode plugin with some other modern techniques. For that check my [RPGLE intro]() or the [IBM I pipeline](https://github.com/kraudy/IBM-i-pipeline)
+It is also possible to create the member, edit the source code and compile it directly from the Code4i VsCode plugin with some other modern techniques. For that check my [RPGLE intro](https://github.com/kraudy/rpg_language) or the [IBM I pipeline](https://github.com/kraudy/IBM-i-pipeline)
 
 ## IBM Highlights
 
