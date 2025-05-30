@@ -130,10 +130,9 @@ With the release of IBM POWER 6 systems, IBM finally finished the merge of the S
 
 > Extra: POWER stands for Performance Optimized With Enhanced RISC
 
-The [XPF](https://en.wikipedia.org/wiki/IBM_i#XPF) layer supports the [IBM I Operating system](https://en.wikipedia.org/wiki/IBM_i), which is actually the topic of this repo. Here starts the IBM I guideline.
+The [XPF](https://en.wikipedia.org/wiki/IBM_i#XPF) layer supports the **CL (Control language)**, database utilities, backwards system compatibility and finally, the [IBM I Operating system](https://en.wikipedia.org/wiki/IBM_i); which is actually the topic of this repo. Here starts the IBM I guideline.
 
 ![alt text](./images/the_green_screen.png)
-
 
 Some recap, a ***context object*** is the object **Library** and the ***Name Resulition List (NRL)*** is the **Library list** of the job which has a list of libraries where objects will be searched. This will make more sense later.
 
