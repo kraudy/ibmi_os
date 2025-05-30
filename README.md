@@ -1,10 +1,10 @@
 # IBM i operating system
 
-This is intended to give a guideline on the eternal IBM i operating system.
+This is intended to give a guideline on the eternal **IBM i** operating system.
 
 ![alt text](./images/ibmi_logo.png)
 
-## Table of contents
+# Table of contents
 
 - [Abstractions](#abstractions)
   - [Starting from the bottom](#starting-from-the-bottom)
@@ -46,19 +46,21 @@ Now we had an intermediary layer: the [*compiler*](https://en.wikipedia.org/wiki
 
 The same goes for storage, it was not possible to increase it dynamically without changes to the machine and the software running on it.
 
-> Big companies running 24/7 operations would not be too happy about changing all their software to update the hardware.
+> Big companies running 24/7 operations would not be too happy about changing all their software to update the hardware. Remember that these were the only companies that could affort a mainframe at the time.
 
-There was a need for a better way to manage resources independently, improve them and scale. For a machine, there are basically 2 important parts: **Computation** and **Storage**. IBM knew this very well and decided that to really improve the technology, they needed to separate these two and **abstract** them to the high-level implementations with an intermediary layer.
+There was a need for a better way to manage resources independently, improve them and scale. 
 
-To **abstract Storage**, a single representation of all the system storage was needed. The idea of [Single-level storage (SLS)](https://en.wikipedia.org/wiki/Single-level_store) started emerging with the *HLS* (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). 
+For a machine, there are basically 2 important parts: **Computation** and **Storage**. IBM knew this very well and decided that to really improve the technology, they needed to separate these two and **abstract** them to the **higher-level** implementations with an **intermediary layer**.
+
+To **abstract Storage**, a single representation of all the system storage was needed. The idea of [Single-level storage (SLS)](https://en.wikipedia.org/wiki/Single-level_store) started emerging with the **HLS** (Higher Level System), and the [Future Systems project (FS)](https://en.wikipedia.org/wiki/IBM_Future_Systems_project). 
 
 To **abstract Computation**, a machine that *natively* executed high-level procedural languages ([FORTRAN](https://en.wikipedia.org/wiki/Fortran), [COBOL](https://en.wikipedia.org/wiki/COBOL), [PL/i](https://en.wikipedia.org/wiki/PL/I), [APL](https://en.wikipedia.org/wiki/APL_(programming_language)), [RPG](https://en.wikipedia.org/wiki/IBM_RPG)) was needed, but without interpretation downtime (like the [Java virtual machine (JVM)](https://en.wikipedia.org/wiki/Java_virtual_machine)).
 
-If that is not enough, this new system also needed to be backwards compatible with previous older systems.
+If that was not enough, this new system also needed to be backwards compatible with previous older systems.
 
 This movement towards a unified IBM product line was called [***Project Fort Knox***](https://en.wikipedia.org/wiki/IBM_AS/400#Fort_Knox). Needless to say, this was an incredibly ambitious project that needed a large number of breakthroughs in many areas at the time, which led to the ***Project Fort Knox*** being terminated. 
 
-> Actually, ***Project Fort Knox*** was one of IBM top most time/resource consuming projects.
+> Actually, ***Project Fort Knox*** was one of IBM top 3 most time/resource consuming projects.
 
 The seed of these ideas set a firm base for the future of IBM and paved the way for the new generation of machines: The **System/38**.
 
@@ -66,7 +68,9 @@ The seed of these ideas set a firm base for the future of IBM and paved the way 
 
 The [System/38](https://en.wikipedia.org/wiki/IBM_System/38) was released. It actually had some of the original ambitious ideas of ***Project Fort Knox***.
 
-Programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). This was done through a **Machine Interface (MI)**, the high-level architecture is never directly executed, or put in other words: **the hardware and the software can be improved independently**. (**Computation abstraction**)
+Programs were compiled into a high-level instruction set, which was not *interpreted* but rather *translated* into a lower-level machine instruction set to be executed (big emphasis on *translated*). 
+
+The translation was done through a **Machine Interface (MI)**, the high-level architecture is never directly executed, or put in other words: **the hardware and the software can be improved independently**. (**Computation abstraction**)
 
 > The operating system for the System/38 was the [Control Program Facility](https://en.wikipedia.org/wiki/Control_Program_Facility). Before that IBM had the [System Support Program](https://en.wikipedia.org/wiki/System_Support_Program) operating system for the [System/34](https://en.wikipedia.org/wiki/IBM_System/34) and the [System/36](https://en.wikipedia.org/wiki/IBM_System/36). These were actually considered midrange computers, small mainframes.
 
@@ -74,35 +78,35 @@ The system implemented the [Single-level storage (SLS)](https://en.wikipedia.org
 
 ## Explaining Objects
 
-An **object** is an instance of an abstract data type and the system high-level  instructions exist to create, manipulate, examine and delete each of these system object types. The data type of the object defines what type of operations can be performed on it. That is the technical definition and is leveraging on the ideas of **Computation abstraction** and **Storage abstraction**. 
+An **object** is an instance of an abstract data type and the system high-level  instructions exist to create, manipulate, examine and delete each of these system object types. 
 
-> The non technical definition: An object is *something* to *operate on*.
+The data type of the **object** defines what kind of operations can be performed on it. That abstraction is leveraging on the ideas of **Computation abstraction** and **Storage abstraction**. 
 
 > This idea is similar to typed pointers in a programming language like C: `int *i = 0` => This means that at some address the machine will store a series of bits that will be interpreted in the context of the abstract data type **int**.
 
-These high-level instructions are encpauslated in the [CL (Control language)](https://en.wikipedia.org/wiki/Control_Language) commands which is designed to mainupalate these **objects**
+These **high-level** instructions are encpauslated in the [CL (Control language)](https://en.wikipedia.org/wiki/Control_Language) commands which is designed to mainupalate these **objects**
 
-When a **CL** command that modifies an object is executed, it actually performs a series of memory-to-memory high-level microcode instructions that modify the object attributes or composition directly, instead of doing register-to-memory operations like low-level instructions set.
+When a **CL** command modifies an object, it actually performs a series of memory-to-memory high-level instructions that modify the object attributes, representation or composition directly in memory, instead of doing register-to-memory operations like low-level instructions set.
 
 **Objects** can be: programs, jobs, tables, cursors, data queues, memory spaces, etc. The memory space is the only object that can be manipulated at the byte level by instructions like the legendary ***MOVE*** operation.
 
 > As you may see, IBM took the idea of abstract data type like int, float, char, etc, to a whole new level.
 
-> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log in on the system.
-
 To address (locate) these **objects**, the system uses different types of pointers: system pointers, space pointers, data pointers, instruction pointers, etc.
 
-Pointers address objects but they use a ***context object*** (**Library** on the IBM I) to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** (**Library list** on the IBM I) which is basically a list of pointers to various ***context objects*** 
+Pointers address objects but they use a ***context object*** (**Library**, more on that later) to resolve names which allow logical object substitution (which are zero cost movements, similar to those performed on tensor tranformations like transpose). 
 
-The consequences of these *abstraction* ideas were huge: separation of high-level programming from specific instruction sets, *translation* of high-level instructions to low-level for no *interpretation* downtime, single-level-storage where programs, files and everything else were treated as objects in the same address space, and finally, a built-in database (not relational yet) (DB2 Intro coming soon). Sounds like a W.
+The same object name can reffer to different object in different context. When an object is addressed, the system examines the ***Name Resulition List (NRL)*** (**Library list**, more on that later) which is basically a list of pointers to various ***context objects*** 
+
+The consequences of these **abstraction** ideas were huge: separation of high-level programming from specific hardware instruction sets, *translation* of high-level instructions to low-level for no *interpretation* downtime, single-level-storage where programs, files and everything else were treated as **objects** in the same address space, and finally, a built-in database (not relational yet) (DB2 Intro coming soon). Sounds like a W.
 
 >The idea of modularization and separations at different levels of abstraction is a pattern found on many areas of computer science. Some examples: the network stack ([OSI Model](https://en.wikipedia.org/wiki/OSI_model), [TCP/IP](https://en.wikipedia.org/wiki/Internet_protocol_suite) ) and the internet ([REST arch](https://en.wikipedia.org/wiki/REST)).
 
 ## The legendary AS/400
 
-After ***Project Fort Knox*** being terminated [***Project Silverlake***](https://en.wikipedia.org/wiki/IBM_AS/400#Silverlake) begun. 
+After ***Project Fort Knox*** being terminated [***Project Silverlake***](https://en.wikipedia.org/wiki/IBM_AS/400#Silverlake) began. 
 
-Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architecture and after refining and extending its concepts, ***Project Silverlake*** gave life to the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, and backward compatibility.
+Built on the [System/38](https://en.wikipedia.org/wiki/IBM_System/38)'s architecture and after refining and extending its concepts, ***Project Silverlake*** gave life to the famous [AS/400](https://en.wikipedia.org/wiki/IBM_AS/400). Which was one of IBM’s most successful midrange systems due to its robustness, flexibility, integration, and backward compatibility.
 
 This system marked a revolutionary step in IBM architecture by re-introducing the high-level *machine interface* (MI) with the concept of a [Technology Independent Machine Interface (TIMI)](https://en.wikipedia.org/wiki/IBM_i#TIMI). This is like a virtual machine and the reason behind the [Integrated Language Environment (ILE)](https://en.wikipedia.org/wiki/Integrated_Language_Environment) (More about ILE on my RPG repo coming soon)
 
@@ -114,23 +118,17 @@ The **Single-level storage (SLS)** of the **System/38** was also implemented to 
 
 Again, leveraging on these two concpets of **Computation and Resource** abstractions, is the concept of ***Object*** as it was in the **system/38**
 
-The **TIMI** virual interface is supported by the ***System Licensed Internal Code (SLIC)***, written in [C++](https://en.wikipedia.org/wiki/C%2B%2B) and assembler. The **SLIC** can be compared to a [Kernel](https://en.wikipedia.org/wiki/Kernel_(operating_system))
+The **TIMI** virual interface is supported by the [***System Licensed Internal Code (SLIC)***](https://en.wikipedia.org/wiki/IBM_i#SLIC), written in [C++](https://en.wikipedia.org/wiki/C%2B%2B) and assembler. The **SLIC** can be compared to a [Kernel](https://en.wikipedia.org/wiki/Kernel_(operating_system))
 
-The **SLIC** supports the **TIMI** wich inturn is the base of the **XPF** which is the code that implements the hardware independent components of the operating system that are compiled into **TIMI** instructions. Is is implemented in PL/MI
+The **SLIC** supports the **TIMI** wich inturn is the base of the [**XPF**](https://en.wikipedia.org/wiki/IBM_i#XPF) which is the code that implements the hardware independent components of the operating system that are compiled into **TIMI** instructions. Is is implemented in [PL/MI](https://en.wikipedia.org/wiki/PL/I#PL/I_dialects)
 
-The operating system of this machine was the Integrated Operating System (OS/400). Later, the AS/400 evolved into the iSeries, System I and now [IBM Power Systems](https://en.wikipedia.org/wiki/IBM_Power_Systems). The OS/400 was renamed to i5/OS and then to the [IBM i](https://en.wikipedia.org/wiki/IBM_i). 
-
-> IBM likes to change names a lot.
+The operating system of this machine was the Integrated Operating System (OS/400). Later, the AS/400 evolved into the iSeries, System I and now [IBM Power Systems](https://en.wikipedia.org/wiki/IBM_Power_Systems). The OS/400 was renamed to i5/OS and then to the [IBM i](https://en.wikipedia.org/wiki/IBM_i)... IBM likes to change names a lot.
 
 # Finally, The IBM I
 
-With the release of IBM POWER 6 systems, IBM finally finished the merge of the System I and [System p](https://en.wikipedia.org/wiki/IBM_System_p) hardware. Today it is possible to run [IBM i](https://en.wikipedia.org/wiki/IBM_i), [AIX](https://en.wikipedia.org/wiki/IBM_AIX) and [Linux](https://en.wikipedia.org/wiki/Linux) on the IBM POWER systems. 
+With the release of IBM POWER 6 systems, IBM finally finished the merge of the System I and [System p](https://en.wikipedia.org/wiki/IBM_System_p) hardware. Today it is possible to run [IBM i](https://en.wikipedia.org/wiki/IBM_i), [AIX](https://en.wikipedia.org/wiki/IBM_AIX) and [Linux](https://en.wikipedia.org/wiki/Linux) on the IBM POWER systems. Nowadays is common to see **IBM I** and **AIX** running in the same system. The man behind the unification of these IBM systems was [Frank Soltis](https://en.wikipedia.org/wiki/Frank_Soltis)
 
-> This layout: **IBM I/AIX** is what you usually see in most companies nowadays and is mostly taken for granted.
-
-> POWER stands for: Performance Optimized With Enhanced RISC
-
-The man behind this merge was [Frank Soltis](https://en.wikipedia.org/wiki/Frank_Soltis)
+> Extra: POWER stands for Performance Optimized With Enhanced RISC
 
 The [XPF](https://en.wikipedia.org/wiki/IBM_i#XPF) layer supports the [IBM I Operating system](https://en.wikipedia.org/wiki/IBM_i), which is actually the topic of this repo. Here starts the IBM I guideline.
 
@@ -183,6 +181,8 @@ A process data structure contains an activation entry for each activated program
 The main purpose of an operating sytem is managing resources (CPU, Disk, Memory, etc); this includes abstracting and assigning them where needed.
 
 To execute a program, the OS needs to allocate the resources needed for it, but it does not allocate them directly to the program; rather, an abstraction is used: [**The job**](https://en.wikipedia.org/wiki/Job_(computing)). This is the **Activation**.
+
+> A job or process has a ***Process Control Space*** object that contains its state and is usually asiciated to a ***User Profile*** object when you log in on the system.
 
 The system allocates resources to the job, and the program is basically **loaded** (**activated**) into the job resources. Now the program can be executed (**invocated**) through the job resources. Really cool stuff.
 
